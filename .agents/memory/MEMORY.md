@@ -1,0 +1,2 @@
+- [Feelms monorepo architecture](feelms-architecture.md) — three-app architecture: feelms (site), admin (panel), api-server (backend), plus shared/ for types/utils/constants.
+- [Admin app token key](feelms-admin-auth.md) — admin uses `feelms_admin_token` in localStorage; 2FA session keys prefixed `admin_2fa_*`.

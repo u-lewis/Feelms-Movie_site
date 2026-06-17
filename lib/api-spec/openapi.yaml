@@ -1,0 +1,1294 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: Feelms streaming platform API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: auth
+    description: Authentication
+  - name: movies
+    description: Movie management
+  - name: banners
+    description: Hero banner/swiper management
+  - name: sections
+    description: Homepage section management
+  - name: users
+    description: User management
+  - name: payments
+    description: Payment and VIP subscriptions
+  - name: ads
+    description: Ad management
+  - name: stats
+    description: Admin analytics
+  - name: interpreters
+    description: Interpreter management
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  # AUTH
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          description: Bad request
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Unauthorized
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current user
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Unauthorized
+
+  # MOVIES
+  /movies:
+    get:
+      operationId: getMovies
+      tags: [movies]
+      summary: List movies with optional filters
+      parameters:
+        - name: genre
+          in: query
+          schema:
+            type: string
+        - name: vipOnly
+          in: query
+          schema:
+            type: boolean
+        - name: featured
+          in: query
+          schema:
+            type: boolean
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+        - name: interpreted
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Movie"
+    post:
+      operationId: createMovie
+      tags: [movies]
+      summary: Create a movie (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MovieInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Movie"
+
+  /movies/trending:
+    get:
+      operationId: getTrendingMovies
+      tags: [movies]
+      summary: Get trending movies
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Movie"
+
+  /movies/new-releases:
+    get:
+      operationId: getNewReleases
+      tags: [movies]
+      summary: Get new release movies
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Movie"
+
+  /movies/vip-exclusives:
+    get:
+      operationId: getVipExclusives
+      tags: [movies]
+      summary: Get VIP exclusive movies
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Movie"
+
+  /movies/{id}:
+    get:
+      operationId: getMovie
+      tags: [movies]
+      summary: Get single movie
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Movie"
+        "404":
+          description: Not found
+    patch:
+      operationId: updateMovie
+      tags: [movies]
+      summary: Update a movie (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MovieUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Movie"
+    delete:
+      operationId: deleteMovie
+      tags: [movies]
+      summary: Delete a movie (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /movies/{id}/watch:
+    post:
+      operationId: recordWatch
+      tags: [movies]
+      summary: Record a watch history entry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WatchHistoryEntry"
+
+  # INTERPRETERS
+  /interpreters:
+    get:
+      operationId: getInterpreters
+      tags: [interpreters]
+      summary: List all interpreters
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Interpreter"
+    post:
+      operationId: createInterpreter
+      tags: [interpreters]
+      summary: Create an interpreter (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InterpreterInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Interpreter"
+
+  /interpreters/{id}:
+    patch:
+      operationId: updateInterpreter
+      tags: [interpreters]
+      summary: Update an interpreter (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InterpreterUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Interpreter"
+    delete:
+      operationId: deleteInterpreter
+      tags: [interpreters]
+      summary: Delete an interpreter (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # BANNERS
+  /banners:
+    get:
+      operationId: getBanners
+      tags: [banners]
+      summary: List active banners
+      parameters:
+        - name: all
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Banner"
+    post:
+      operationId: createBanner
+      tags: [banners]
+      summary: Create a banner (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BannerInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Banner"
+
+  /banners/{id}:
+    patch:
+      operationId: updateBanner
+      tags: [banners]
+      summary: Update a banner (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BannerUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Banner"
+    delete:
+      operationId: deleteBanner
+      tags: [banners]
+      summary: Delete a banner (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # SECTIONS
+  /sections:
+    get:
+      operationId: getSections
+      tags: [sections]
+      summary: List homepage sections
+      parameters:
+        - name: all
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Section"
+    post:
+      operationId: createSection
+      tags: [sections]
+      summary: Create a section (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SectionInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Section"
+
+  /sections/{id}:
+    patch:
+      operationId: updateSection
+      tags: [sections]
+      summary: Update a section (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SectionUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Section"
+    delete:
+      operationId: deleteSection
+      tags: [sections]
+      summary: Delete a section (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # USERS
+  /users:
+    get:
+      operationId: getUsers
+      tags: [users]
+      summary: List all users (admin only)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+
+  /users/{id}/role:
+    patch:
+      operationId: updateUserRole
+      tags: [users]
+      summary: Update user role (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RoleUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  # PAYMENTS
+  /payments/initiate:
+    post:
+      operationId: initiatePayment
+      tags: [payments]
+      summary: Initiate a VIP subscription payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentInput"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentInitResponse"
+
+  /payments/verify:
+    post:
+      operationId: verifyPayment
+      tags: [payments]
+      summary: Verify a payment and upgrade user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentVerifyInput"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentVerifyResponse"
+
+  /payments/history:
+    get:
+      operationId: getPaymentHistory
+      tags: [payments]
+      summary: Get payment history for current user
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Payment"
+
+  # ADS
+  /ads:
+    get:
+      operationId: getAds
+      tags: [ads]
+      summary: List ads (admin can see all, users see active)
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Ad"
+    post:
+      operationId: createAd
+      tags: [ads]
+      summary: Create an ad (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ad"
+
+  /ads/{id}:
+    patch:
+      operationId: updateAd
+      tags: [ads]
+      summary: Update an ad (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ad"
+    delete:
+      operationId: deleteAd
+      tags: [ads]
+      summary: Delete an ad (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /ads/impression:
+    post:
+      operationId: recordAdImpression
+      tags: [ads]
+      summary: Record an ad impression
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdImpressionInput"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdImpression"
+
+  # STATS
+  /stats/dashboard:
+    get:
+      operationId: getDashboardStats
+      tags: [stats]
+      summary: Get admin dashboard stats
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
+  /stats/watch-history:
+    get:
+      operationId: getWatchHistory
+      tags: [stats]
+      summary: Get watch history for current user
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WatchHistoryEntry"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    # AUTH
+    RegisterInput:
+      type: object
+      required: [email, password, name]
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        name:
+          type: string
+
+    LoginInput:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+    AuthResponse:
+      type: object
+      required: [token, user]
+      properties:
+        token:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+
+    User:
+      type: object
+      required: [id, email, name, role, createdAt]
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+          enum: [FREE, VIP, ADMIN]
+        vipExpiry:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    RoleUpdate:
+      type: object
+      required: [role]
+      properties:
+        role:
+          type: string
+          enum: [FREE, VIP, ADMIN]
+        vipExpiry:
+          type: ["string", "null"]
+
+    # INTERPRETERS
+    Interpreter:
+      type: object
+      required: [id, name, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        bio:
+          type: ["string", "null"]
+        photo:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    InterpreterInput:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        bio:
+          type: string
+        photo:
+          type: string
+
+    InterpreterUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        bio:
+          type: string
+        photo:
+          type: string
+
+    # MOVIES
+    Movie:
+      type: object
+      required: [id, title, description, poster, genres, vipOnly, featured, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        poster:
+          type: string
+        trailer:
+          type: ["string", "null"]
+        streamingLinks:
+          type: array
+          items:
+            type: string
+        downloadLinks:
+          type: array
+          items:
+            type: string
+        vipOnly:
+          type: boolean
+        featured:
+          type: boolean
+        genres:
+          type: array
+          items:
+            type: string
+        year:
+          type: ["integer", "null"]
+        rating:
+          type: ["number", "null"]
+        duration:
+          type: ["string", "null"]
+        watchCount:
+          type: integer
+        interpreted:
+          type: boolean
+        interpreters:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+
+    MovieInput:
+      type: object
+      required: [title, description, poster, genres]
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        poster:
+          type: string
+        trailer:
+          type: string
+        streamingLinks:
+          type: array
+          items:
+            type: string
+        downloadLinks:
+          type: array
+          items:
+            type: string
+        vipOnly:
+          type: boolean
+        featured:
+          type: boolean
+        genres:
+          type: array
+          items:
+            type: string
+        year:
+          type: integer
+        rating:
+          type: number
+        duration:
+          type: string
+        interpreted:
+          type: boolean
+        interpreters:
+          type: array
+          items:
+            type: string
+
+    MovieUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        poster:
+          type: string
+        trailer:
+          type: string
+        streamingLinks:
+          type: array
+          items:
+            type: string
+        downloadLinks:
+          type: array
+          items:
+            type: string
+        vipOnly:
+          type: boolean
+        featured:
+          type: boolean
+        genres:
+          type: array
+          items:
+            type: string
+        year:
+          type: integer
+        rating:
+          type: number
+        duration:
+          type: string
+        interpreted:
+          type: boolean
+        interpreters:
+          type: array
+          items:
+            type: string
+
+    WatchHistoryEntry:
+      type: object
+      required: [id, movieId, userId, watchedAt]
+      properties:
+        id:
+          type: integer
+        movieId:
+          type: integer
+        userId:
+          type: integer
+        watchedAt:
+          type: string
+        movie:
+          $ref: "#/components/schemas/Movie"
+
+    # BANNERS
+    Banner:
+      type: object
+      required: [id, title, active, orderIndex, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        subtitle:
+          type: ["string", "null"]
+        image:
+          type: ["string", "null"]
+        videoUrl:
+          type: ["string", "null"]
+        ctaText:
+          type: ["string", "null"]
+        ctaLink:
+          type: ["string", "null"]
+        movieId:
+          type: ["integer", "null"]
+        active:
+          type: boolean
+        orderIndex:
+          type: integer
+        createdAt:
+          type: string
+
+    BannerInput:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+        subtitle:
+          type: string
+        image:
+          type: string
+        videoUrl:
+          type: string
+        ctaText:
+          type: string
+        ctaLink:
+          type: string
+        movieId:
+          type: integer
+        active:
+          type: boolean
+        orderIndex:
+          type: integer
+
+    BannerUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        subtitle:
+          type: string
+        image:
+          type: string
+        videoUrl:
+          type: string
+        ctaText:
+          type: string
+        ctaLink:
+          type: string
+        movieId:
+          type: integer
+        active:
+          type: boolean
+        orderIndex:
+          type: integer
+
+    # SECTIONS
+    Section:
+      type: object
+      required: [id, title, movieIds, orderIndex, enabled, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        movieIds:
+          type: array
+          items:
+            type: integer
+        orderIndex:
+          type: integer
+        enabled:
+          type: boolean
+        sectionType:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+        movies:
+          type: array
+          items:
+            $ref: "#/components/schemas/Movie"
+
+    SectionInput:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+        movieIds:
+          type: array
+          items:
+            type: integer
+        orderIndex:
+          type: integer
+        enabled:
+          type: boolean
+        sectionType:
+          type: string
+
+    SectionUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        movieIds:
+          type: array
+          items:
+            type: integer
+        orderIndex:
+          type: integer
+        enabled:
+          type: boolean
+        sectionType:
+          type: string
+
+    # PAYMENTS
+    PaymentInput:
+      type: object
+      required: [plan, provider, phone]
+      properties:
+        plan:
+          type: string
+          enum: [monthly, yearly]
+        provider:
+          type: string
+          enum: [MTN, AIRTEL, FLUTTERWAVE]
+        phone:
+          type: string
+
+    PaymentInitResponse:
+      type: object
+      required: [paymentId, status, message]
+      properties:
+        paymentId:
+          type: string
+        status:
+          type: string
+        message:
+          type: string
+        redirectUrl:
+          type: ["string", "null"]
+
+    PaymentVerifyInput:
+      type: object
+      required: [paymentId]
+      properties:
+        paymentId:
+          type: string
+        transactionId:
+          type: string
+
+    PaymentVerifyResponse:
+      type: object
+      required: [success, message]
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+
+    Payment:
+      type: object
+      required: [id, userId, amount, status, provider, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        amount:
+          type: number
+        status:
+          type: string
+          enum: [PENDING, SUCCESS, FAILED]
+        provider:
+          type: string
+        plan:
+          type: ["string", "null"]
+        transactionId:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    # ADS
+    Ad:
+      type: object
+      required: [id, type, active, duration, createdAt]
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [PREROLL, DOWNLOAD, TAB_RETURN, BANNER]
+        mediaUrl:
+          type: ["string", "null"]
+        imageUrl:
+          type: ["string", "null"]
+        title:
+          type: ["string", "null"]
+        duration:
+          type: integer
+        active:
+          type: boolean
+        target:
+          type: string
+          enum: [FREE_ONLY, ALL]
+        createdAt:
+          type: string
+
+    AdInput:
+      type: object
+      required: [type, duration]
+      properties:
+        type:
+          type: string
+          enum: [PREROLL, DOWNLOAD, TAB_RETURN, BANNER]
+        mediaUrl:
+          type: string
+        imageUrl:
+          type: string
+        title:
+          type: string
+        duration:
+          type: integer
+        active:
+          type: boolean
+        target:
+          type: string
+          enum: [FREE_ONLY, ALL]
+
+    AdUpdate:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [PREROLL, DOWNLOAD, TAB_RETURN, BANNER]
+        mediaUrl:
+          type: string
+        imageUrl:
+          type: string
+        title:
+          type: string
+        duration:
+          type: integer
+        active:
+          type: boolean
+        target:
+          type: string
+          enum: [FREE_ONLY, ALL]
+
+    AdImpressionInput:
+      type: object
+      required: [adId, context]
+      properties:
+        adId:
+          type: integer
+        context:
+          type: string
+          enum: [movie_play, download, tab_return, banner]
+
+    AdImpression:
+      type: object
+      required: [id, adId, context, timestamp]
+      properties:
+        id:
+          type: integer
+        adId:
+          type: integer
+        userId:
+          type: ["integer", "null"]
+        context:
+          type: string
+        timestamp:
+          type: string
+
+    # STATS
+    DashboardStats:
+      type: object
+      required: [totalUsers, vipUsers, totalMovies, totalWatches, recentPayments, topMovies]
+      properties:
+        totalUsers:
+          type: integer
+        vipUsers:
+          type: integer
+        freeUsers:
+          type: integer
+        totalMovies:
+          type: integer
+        vipMovies:
+          type: integer
+        totalWatches:
+          type: integer
+        recentPayments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Payment"
+        topMovies:
+          type: array
+          items:
+            $ref: "#/components/schemas/Movie"

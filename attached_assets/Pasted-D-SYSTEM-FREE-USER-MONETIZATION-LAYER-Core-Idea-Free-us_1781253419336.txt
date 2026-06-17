@@ -1,0 +1,176 @@
+D SYSTEM (FREE USER MONETIZATION LAYER)
+🎯 Core Idea
+
+Free users are monetized through controlled, non-intrusive but frequent ad events tied to:
+
+movie viewing
+downloads
+tab switching (attention tracking)
+re-entry sessions
+
+BUT: ads must feel like streaming platform ads (Netflix-style), not spam popups.
+
+🧠 AD TYPES YOU NEED
+1. 🎬 Pre-roll Ads (before movies)
+
+When a free user clicks “Play”:
+
+5–15 second ad
+Skippable after 5 seconds (optional MVP toggle)
+Must be video or static banner
+
+👉 Trigger: onPlayClick
+
+2. ⬇ Download Ads (before download link access)
+
+Before showing download links:
+
+Show ad screen (3–10 seconds)
+Then unlock download buttons
+
+👉 This is your highest revenue point
+
+Flow:
+
+Click download
+Ad screen appears
+Countdown finishes
+Download links reveal
+3. 🔁 Tab Switch Ads (IMPORTANT — your idea)
+
+When user:
+
+leaves tab → comes back
+switches away → returns
+
+You trigger:
+
+“Welcome Back Ad Overlay”
+Full-screen modal OR bottom overlay
+3–8 seconds
+then auto-dismiss
+
+👉 But IMPORTANT:
+Do NOT fire too aggressively or users will leave.
+
+Recommended rule:
+
+max 1 tab-return ad per 60–90 seconds
+4. 🧭 Session-Based Ads (soft background monetization)
+
+Instead of constant popups:
+
+Every X minutes (e.g. 5–8 min)
+Show a “sponsored banner card” inside UI rows
+
+Example:
+
+“Sponsored Movie”
+“Featured Partner Content”
+
+This feels native, not disruptive.
+
+🎨 AD UX RULES (VERY IMPORTANT)
+❌ Avoid
+Random popups every click
+Loud flashing ads
+Blocking UI constantly
+Multiple stacked ads
+✅ Do instead
+Full-screen but clean ad scenes
+Dark overlay style (same UI system)
+Smooth fade in/out transitions
+Consistent design with app theme
+💚 HOW IT FITS YOUR CURRENT SYSTEM
+Free User Flow
+Watching movie:
+Click play
+Pre-roll ad (5–15s)
+Movie starts
+Download:
+Click download
+Ad screen appears
+Unlock links after timer
+Tab return:
+User comes back
+“Welcome back” ad overlay
+Auto dismiss
+VIP USER RULE
+ZERO ads anywhere
+No pre-roll
+No download ads
+No tab-return interruptions
+
+VIP = completely clean experience
+
+🧱 DATABASE ADDITION (IMPORTANT)
+
+Add ad tracking:
+
+ads
+- id
+- type (PREROLL, DOWNLOAD, TAB_RETURN, BANNER)
+- media_url
+- duration
+- active
+- target (FREE_ONLY, ALL)
+
+And user ad logs:
+
+ad_impressions
+- id
+- user_id
+- ad_id
+- timestamp
+- context (movie_play, download, tab_return)
+⚙️ FRONTEND LOGIC
+
+You need event hooks:
+
+Movie play
+onPlayClick → check user.role === FREE → showAd()
+Download click
+onDownloadClick → showAd() → then unlock links
+Tab visibility API
+document.visibilityState
+
+Trigger:
+
+if (user returns && cooldown passed) showAd()
+🧠 PRODUCT BALANCE (IMPORTANT INSIGHT)
+
+If you overdo ads:
+
+users leave
+platform feels cheap
+
+If you underdo ads:
+
+no revenue
+
+👉 Sweet spot:
+
+1 ad per major action (play, download, return)
+not per scroll or hover
+
+Add this to your existing master prompt:
+
+📢 AD SYSTEM REQUIREMENT
+
+The platform must include a full advertising system for FREE users:
+
+Ad placements:
+Pre-roll ads before video playback
+Full-screen ads before download access
+Tab-switch return ads when user re-enters site tab
+Occasional in-feed sponsored content cards
+Rules:
+VIP users must NEVER see ads
+Ads must match platform design (dark cinematic theme)
+Ads must be smooth, non-jarring, and transition-based
+Ads must be controlled via admin panel (enable/disable per type)
+Admin control:
+Admin can upload/manage ads
+Admin can choose ad type (pre-roll, download, tab-return, banner)
+Admin can activate/deactivate ads
+Admin can set duration and targeting rules

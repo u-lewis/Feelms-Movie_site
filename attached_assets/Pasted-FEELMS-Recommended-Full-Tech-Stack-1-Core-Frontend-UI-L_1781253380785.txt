@@ -1,0 +1,158 @@
+FEELMS — Recommended Full Tech Stack
+⚙️ 1. Core Frontend (UI Layer)
+🧠 Framework
+Next.js (App Router)
+SSR for SEO (important for public movie pages)
+API routes for backend logic
+Edge functions for auth + streaming security
+🎨 Styling System (VERY IMPORTANT for premium feel)
+Tailwind CSS
+fast UI iteration
+consistent design system
+tailwind-merge + clsx
+clean conditional styling
+CVA (class-variance-authority)
+design variants for buttons/cards (VIP vs Free vs Admin)
+💎 Premium UI Component Layer
+
+Use:
+
+shadcn/ui
+modern, Apple-level UI components
+fully customizable
+perfect for dashboards + modals + dialogs
+Radix UI
+unstyled primitives behind shadcn
+accessibility + stability
+
+👉 This is your “Netflix-quality UI foundation”
+
+🎬 2. Animation / Motion System (CRITICAL for “alive scroll”)
+Framer Motion
+page transitions
+card animations
+modal transitions
+scroll reveal effects
+Lenis (smooth scrolling)
+buttery scroll experience
+makes UI feel cinematic
+GSAP (optional advanced scenes)
+hero animations
+complex timeline transitions
+
+👉 Use Framer Motion as primary, GSAP only for hero-level effects
+
+🎥 3. Video + Streaming Layer
+hls.js
+adaptive streaming (Netflix-style playback)
+video.js (optional wrapper)
+better controls UI
+react-player
+quick MVP video embedding
+🔐 4. Authentication & Security
+NextAuth.js OR Clerk
+Clerk (recommended for MVP speed + premium auth UI)
+bcryptjs
+password hashing
+jsonwebtoken (JWT) OR secure sessions
+middleware.ts (Next.js)
+VIP route protection
+🧠 5. Backend / API Layer
+Next.js API Routes (MVP)
+OR separate backend:
+Node.js + Express (if scaling later)
+🗄 Database
+PostgreSQL
+ORM:
+Prisma (BEST choice)
+💳 6. Payments (Rwanda + Global)
+Flutterwave
+MTN Mobile Money API
+Airtel Money API
+
+Backend webhook handling required
+
+📊 7. Admin Dashboard (CMS feel)
+shadcn/ui + TanStack Table
+React Hook Form
+Zod validation
+⚡ 8. State Management
+Zustand (BEST for your case)
+simple
+fast
+no boilerplate
+
+Avoid Redux (too heavy for MVP)
+
+🧭 9. Data Fetching
+TanStack Query (React Query)
+caching
+streaming movie lists
+VIP gating logic
+🎨 10. Icons + Visual Polish
+Lucide Icons (best match with shadcn)
+Phosphor Icons (more expressive alternative)
+🧱 11. Forms & Validation
+React Hook Form
+Zod
+🖼 12. Media Optimization
+next/image
+Cloudinary (optional CDN for posters/trailers)
+📢 13. Ads System (your monetization engine)
+custom React modal system (build yourself)
+optional:
+Google Ad Manager (later stage)
+🧠 14. UX “Premium Feel” Enhancers
+
+These make it feel like Netflix/Apple TV:
+
+next-themes (dark mode system)
+use-debounce
+nprogress (page loading bar)
+react-intersection-observer (scroll animations trigger)
+keen-slider (alternative to swiper, smoother performance)
+🎠 15. Carousel / Swiper (VERY IMPORTANT for banners)
+
+Choose ONE:
+
+embla-carousel-react (BEST)
+smooth
+lightweight
+used in modern SaaS UI
+
+OR
+
+swiper.js
+more features
+slightly heavier
+
+👉 Recommendation: Embla (clean + premium feel)
+
+💎 FINAL PREMIUM STACK SUMMARY
+Frontend
+
+Next.js + Tailwind + shadcn/ui + Framer Motion
+
+UX Motion
+
+Lenis + Framer Motion + (optional GSAP)
+
+Backend
+
+Next.js API + Prisma + PostgreSQL
+
+Auth
+
+Clerk or NextAuth
+
+State
+
+Zustand + React Query
+
+Media
+
+hls.js + Cloudinary (optional)
+
+UI Polish
+
+Lucide icons + Radix UI + Embla carousel

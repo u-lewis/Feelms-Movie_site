@@ -1,0 +1,112 @@
+Refactor and restructure the entire Feelms project into a production-ready architecture while preserving all existing functionality.
+
+IMPORTANT REQUIREMENTS:
+
+1. PUBLIC WEBSITE
+
+* Keep the public streaming website completely separate from the admin application.
+
+2. ADMIN APPLICATION
+
+* Create a dedicated admin application.
+* Move all admin pages, layouts, components, and routes into this application.
+* Intended deployment:
+
+  * Main Site: https://feelms.test
+  * Admin Panel: https://admin.feelms.test
+  * API: https://api.feelms.test
+
+3. BACKEND API
+
+* Create a dedicated backend service.
+* Backend must handle:
+
+  * Admin authentication
+  * Admin OTP verification
+  * Movie management
+  * Categories
+  * Payments
+  * VIP subscriptions
+  * Analytics
+  * Settings
+  * Content management
+* Enforce server-side admin authorization.
+* No frontend code should exist inside the backend.
+
+4. ADMIN SECURITY
+
+* Admin login must support email OTP verification.
+* Prepare secure endpoints for:
+
+  * Login
+  * OTP generation
+  * OTP verification
+  * Session validation
+  * Logout
+* Implement role-based authorization.
+* Protect all admin APIs.
+
+5. SEO OPTIMIZATION FOR THE MAIN SITE
+   Implement a complete SEO structure:
+
+* Dynamic page titles
+* Dynamic meta descriptions
+* Open Graph tags
+* Twitter Card tags
+* Canonical URLs
+* robots.txt
+* sitemap.xml generation
+* Structured data (JSON-LD)
+* Movie schema markup where applicable
+* Proper heading hierarchy (H1, H2, H3)
+* Semantic HTML
+* Optimized image loading
+* Lazy loading where appropriate
+* Fast Core Web Vitals performance
+* Mobile-first optimization
+* Search-engine-friendly URLs
+
+Examples:
+
+* /movie/movie-title
+* /category/action
+* /category/comedy
+
+6. CODE ORGANIZATION
+
+Target structure:
+
+/apps
+/site
+/admin
+/api
+
+/shared
+/types
+/utils
+/constants
+/validation
+
+7. ENVIRONMENT CONFIGURATION
+
+Create separate environment configurations for:
+
+* Site
+* Admin
+* API
+
+All URLs must be configurable through environment variables.
+
+8. DELIVERABLES
+
+After refactoring:
+
+* Show the complete folder structure.
+* List all files moved.
+* List all routes for Site, Admin, and API.
+* List required environment variables.
+* Explain deployment steps for Vercel.
+* Explain deployment steps for Neon PostgreSQL.
+* Report any code conflicts found during migration.
+
+Do not remove or break existing movie streaming, content management, or admin functionality. Preserve all working business logic while improving architecture, maintainability, security, scalability, and SEO.

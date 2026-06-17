@@ -1,0 +1,336 @@
+Build a full-stack MVP streaming platform named “Feelms” .
+
+The platform is a modern movie streaming and download web app with Free and VIP tiers. The design must combine:
+
+Netflix-like minimal cinematic layout
+Spotify-inspired turquoise/teal accent system
+Smooth premium UI transitions (Apple TV level polish)
+Dark cinematic theme with low visual noise
+🎯 CORE FEATURES
+1. User System
+Email/password authentication
+Guest browsing allowed (limited)
+Role-based access:
+Free user
+VIP user
+2. Movie System
+
+Each movie contains:
+
+Title
+Description
+Poster image
+Trailer URL
+Streaming links (external only)
+Download mirror links (MediaFire, Mega, etc.)
+VIP flag (true/false)
+Genre tags
+3. Free vs VIP Logic
+
+Free users:
+
+Can browse all movies
+Can watch limited quality streams (or trailers if needed)
+Ads placeholder system
+Download links delayed or limited
+
+VIP users:
+
+Full access to streaming links
+Fast download links
+No ads
+VIP badge UI
+Exclusive VIP rows
+4. UI/UX Design System
+
+Design must follow:
+
+🎨 Theme
+Background: deep dark navy/black
+Primary accent: turquoise (#1ED7B6)
+VIP accent: muted gold
+UI style: cinematic, minimal, premium
+🎬 Layout
+Hero section with featured movie trailer
+Horizontal scroll rows:
+Trending Now
+Recommended
+New Releases
+VIP Exclusives
+🎥 Movie Cards
+Poster-based cards
+On hover:
+slight lift (no glow)
+fade-in controls (Play / Details / Download)
+smooth animation (120–180ms)
+
+No neon glow effects.
+
+5. VIP System
+VIP badge system
+Locked content overlay for non-VIP users
+Upgrade page with pricing options
+Subscription status stored in database
+6. Payments (Rwanda-friendly)
+
+Integrate:
+
+MTN Mobile Money (Rwanda)
+Airtel Money
+Flutterwave API as fallback
+
+Payment flow:
+
+Subscribe → pay → activate VIP → update user role
+7. Backend Stack
+
+Use:
+
+Next.js (full-stack)
+Prisma ORM
+PostgreSQL database
+JWT authentication
+REST or API routes
+8. Database Schema
+
+Include:
+
+Users
+Movies
+Watch history
+Payments
+VIP subscriptions
+9. Performance Requirements
+Fast loading homepage
+Lazy loading for movie thumbnails
+Optimized streaming links (external hosting only)
+Mobile-first responsive design
+10. Security Rules
+No direct file hosting on server
+Only store metadata + external links
+Protect VIP routes with middleware
+Validate payment before upgrading user
+🧩 OUTPUT REQUIREMENT
+
+Generate:
+
+Full Next.js project structure
+UI components
+Database schema (Prisma)
+API routes for:
+auth
+movies
+payments
+Clean modern UI matching the described design system
+🎯 FINAL GOAL
+
+A production-ready MVP that looks like a real streaming platform (Netflix + Spotify hybrid), scalable into a full SaaS product.
+
+🚀 If you want next step
+
+I can help you:
+
+Turn this into actual working code (step-by-step build)
+Design the database + Prisma schema properly
+Or 
+create the exact UI components (movie card, homepage, VIP page)
+
+Just tell me 👍
+
+nah don't forget that admin can edit any of the content visible to the use including swiper banners
+
+Good catch—that’s actually a core requirement, not an add-on. Without admin-controlled UI content (especially banners/swipers), the platform won’t scale or feel like a real streaming product.
+
+I’ll upgrade your master prompt properly and include a real CMS-style admin system for everything visible to users.
+
+🚀 UPDATED MASTER PROMPT (WITH ADMIN CMS + SWIPER CONTROL)
+
+Use this version instead of the previous one:
+
+🧠 MASTER PROMPT
+
+Build a full-stack MVP streaming platform named “FLIXORA” (or chosen name starting with F).
+
+It is a modern movie streaming and download platform with Free and VIP tiers, featuring a Netflix-style layout + Spotify-inspired turquoise UI system + minimal cinematic UX.
+
+The platform MUST include a full admin CMS system that controls ALL visible frontend content dynamically.
+
+🎯 CORE SYSTEMS
+1. User System
+Email/password authentication
+Guest browsing (limited access)
+Roles:
+FREE_USER
+VIP_USER
+ADMIN
+2. Movie System
+
+Each movie includes:
+
+title
+description
+poster
+trailer URL
+streaming links (external only)
+download mirrors (Mega, MediaFire, etc.)
+VIP_ONLY flag
+genres
+featured flag (for homepage sections)
+3. ADMIN CMS (IMPORTANT)
+
+Admin can fully control the entire UI without code changes.
+
+🧩 Admin Features:
+🎬 Movie Management
+Add / edit / delete movies
+Assign VIP or Free content
+Set featured movies
+Manage thumbnails and trailers
+Manage external streaming/download links
+🎠 Homepage Swiper / Banner System (CRITICAL)
+
+Admin can create and manage:
+
+Hero carousel banners (swiper)
+Promotional slides
+Featured movie highlights
+
+Each banner includes:
+
+image or video background
+title overlay
+subtitle
+CTA button text (e.g., “Watch Now”, “Explore VIP”)
+linked movie or external URL
+active/inactive toggle
+ordering priority
+
+👉 This must reflect LIVE on homepage without redeploy.
+
+🧱 Homepage Layout Control (mini CMS)
+
+Admin can configure:
+
+Row titles (e.g., “Trending Now”, “VIP Exclusives”)
+Which movies appear in each row
+Order of rows
+Enable/disable sections
+👑 VIP Control
+Set VIP pricing
+Enable/disable VIP features
+Manage subscriptions manually if needed
+📊 Dashboard Analytics
+Total users
+VIP users
+Most watched movies
+Click tracking on banners
+🎨 UI/UX DESIGN SYSTEM
+Theme
+Background: deep cinematic black/navy
+Primary accent: turquoise (#1ED7B6)
+VIP accent: muted gold
+Style: minimal, cinematic, premium (NOT flashy)
+🏠 Homepage Structure
+Dynamic Swiper Hero (ADMIN CONTROLLED)
+Full-width banner slider
+Auto-play with smooth transitions
+Each slide links to movie or VIP page
+Movie rows (CMS controlled)
+Trending Now
+Recommended
+New Releases
+VIP Exclusives
+Movie cards:
+poster-based
+hover lift only (NO glow)
+smooth fade-in controls
+🎥 Interaction Rules
+No neon glow effects
+Subtle motion only:
+card lift
+opacity fade
+slight scale (max 1.03–1.05)
+All transitions must feel cinematic and smooth
+💳 PAYMENT SYSTEM (RWANDA SUPPORT)
+
+Integrate:
+
+MTN Mobile Money Rwanda
+Airtel Money
+Flutterwave fallback
+
+Flow:
+
+User selects VIP plan
+Pays via mobile money
+webhook confirms payment
+user role upgrades to VIP automatically
+🧱 TECH STACK
+Next.js (App Router)
+Prisma ORM
+PostgreSQL
+Tailwind CSS
+Framer Motion (light use only)
+JWT auth
+🗄 DATABASE SCHEMA MUST INCLUDE
+Users
+id
+email
+password
+role (FREE, VIP, ADMIN)
+vip_expiry
+Movies
+id
+title
+description
+poster
+trailer
+vip_only
+featured
+Banners (IMPORTANT)
+id
+title
+subtitle
+image/video
+cta_text
+cta_link
+active
+order_index
+HomepageSections
+id
+title
+movie_ids (array or relation)
+order_index
+enabled
+Payments
+id
+user_id
+amount
+status
+provider
+transaction_id
+🔐 SECURITY RULES
+Admin routes protected by middleware
+Only admin can modify CMS content
+VIP routes protected
+No server file hosting of movies (external links only)
+Validate all payment webhooks
+🚀 FINAL OUTPUT REQUIREMENT
+
+Generate:
+
+Full Next.js project
+Admin dashboard (CMS system)
+Movie browsing UI
+Dynamic homepage with swiper banners
+VIP system
+Payment integration structure
+Prisma schema + API routes
+🎯 GOAL
+
+A production-ready MVP streaming platform that feels like:
+
+Netflix (structure)
+Spotify (color identity)
+Apple TV (cinematic motion)
+CMS-powered SaaS product (admin fully controls UI content)

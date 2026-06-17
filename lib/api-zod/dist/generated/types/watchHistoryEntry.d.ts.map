@@ -1,0 +1,1 @@
+{"version":3,"file":"watchHistoryEntry.d.ts","sourceRoot":"","sources":["../../../src/generated/types/watchHistoryEntry.ts"],"names":[],"mappings":"AAAA;;;;;;GAMG;AACH,OAAO,KAAK,EAAE,KAAK,EAAE,MAAM,SAAS,CAAC;AAErC,MAAM,WAAW,iBAAiB;IAChC,EAAE,EAAE,MAAM,CAAC;IACX,OAAO,EAAE,MAAM,CAAC;IAChB,MAAM,EAAE,MAAM,CAAC;IACf,SAAS,EAAE,MAAM,CAAC;IAClB,KAAK,CAAC,EAAE,KAAK,CAAC;CACf"}
