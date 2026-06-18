@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Movie } from "@workspace/api-client-react";
-import { Play, Star, Download, Bookmark } from "lucide-react";
+import { Star, Download, Bookmark } from "lucide-react";
 
 interface MovieCardProps {
   movie: Movie;
@@ -56,7 +56,6 @@ export function MovieCard({ movie, className = "" }: MovieCardProps) {
         {/* Hover overlay — scoped to this card only via group/card */}
         <div className="absolute inset-0 flex flex-col justify-end p-3 opacity-0 group-hover/card:opacity-100 transition-all duration-300 bg-gradient-to-t from-black/95 via-black/50 to-transparent pointer-events-none group-hover/card:pointer-events-auto">
           <div className="transform translate-y-3 group-hover/card:translate-y-0 transition-all duration-300">
-            <Play className="w-9 h-9 text-primary mb-1.5 drop-shadow-lg" fill="currentColor" />
             <h3 className="text-white font-bold text-sm truncate leading-tight">{movie.title}</h3>
             <div className="flex items-center gap-2 text-xs text-white/60 mt-1">
               {movie.year && <span>{movie.year}</span>}
