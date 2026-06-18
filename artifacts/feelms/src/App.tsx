@@ -9,15 +9,9 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Movies from "@/pages/movies";
 import MovieDetail from "@/pages/movie-detail";
-import Profile from "@/pages/profile";
 import TVChannels from "@/pages/tv";
-import WatchHistory from "@/pages/history";
 import Interpreted from "@/pages/interpreted";
 import Category from "@/pages/category";
-import Login from "@/pages/login";
-import Register from "@/pages/register";
-import ForgotPassword from "@/pages/forgot-password";
-import Vip from "@/pages/vip";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,12 +32,6 @@ function Router() {
             <Route path="/category/:slug" component={Category} />
             <Route path="/tv" component={TVChannels} />
             <Route path="/interpreted" component={Interpreted} />
-            <Route path="/profile" component={Profile} />
-            <Route path="/history" component={WatchHistory} />
-            <Route path="/login" component={Login} />
-            <Route path="/register" component={Register} />
-            <Route path="/forgot-password" component={ForgotPassword} />
-            <Route path="/vip" component={Vip} />
             <Route component={NotFound} />
           </Switch>
         </Layout>
