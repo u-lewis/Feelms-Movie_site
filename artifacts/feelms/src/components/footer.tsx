@@ -49,36 +49,74 @@ function IconTelegram() {
 }
 
 const SOCIAL_LINKS = [
-  { label: "X / Twitter", href: "https://x.com", icon: <IconX /> },
-  { label: "Facebook",    href: "https://facebook.com", icon: <IconFacebook /> },
-  { label: "Instagram",   href: "https://instagram.com", icon: <IconInstagram /> },
-  { label: "YouTube",     href: "https://youtube.com", icon: <IconYouTube /> },
-  { label: "TikTok",      href: "https://tiktok.com", icon: <IconTikTok /> },
-  { label: "Telegram",    href: "https://t.me", icon: <IconTelegram /> },
+  { label: "X / Twitter", href: "https://x.com", icon: <IconX />,        color: "hover:text-white hover:bg-white/15" },
+  { label: "Facebook",    href: "https://facebook.com", icon: <IconFacebook />,   color: "hover:text-[#1877F2] hover:bg-[#1877F2]/15" },
+  { label: "Instagram",   href: "https://instagram.com", icon: <IconInstagram />,  color: "hover:text-[#E1306C] hover:bg-[#E1306C]/15" },
+  { label: "YouTube",     href: "https://youtube.com", icon: <IconYouTube />,    color: "hover:text-[#FF0000] hover:bg-[#FF0000]/15" },
+  { label: "TikTok",      href: "https://tiktok.com", icon: <IconTikTok />,     color: "hover:text-white hover:bg-white/15" },
+  { label: "Telegram",    href: "https://t.me", icon: <IconTelegram />,   color: "hover:text-[#2AABEE] hover:bg-[#2AABEE]/15" },
 ];
 
 export function Footer() {
   return (
-    <footer className="w-full border-t border-white/8 bg-background py-6 mt-auto">
-      <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="flex flex-col items-center md:items-start">
-          <Link href="/" className="flex items-center gap-2 mb-1">
-            <img src="/logo.png" alt="Feelms Logo" className="h-6 w-auto" />
-            <span className="text-sm font-bold tracking-widest uppercase">FEELMS</span>
+    <footer className="w-full border-t border-white/5 bg-background py-12 mt-auto">
+      <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <Link href="/" className="text-2xl font-bold text-primary tracking-tighter mb-4 block">
+            FEELMS
           </Link>
-          <p className="text-[10px] text-white/40 uppercase tracking-wider">
-            &copy; {new Date().getFullYear()} Feelms. All rights reserved.
+          <p className="text-sm text-muted-foreground max-w-xs mb-5">
+            A premium cinematic streaming experience for movie lovers.
           </p>
+          {/* Social media icons */}
+          <div className="flex items-center gap-2 flex-wrap">
+            {SOCIAL_LINKS.map(s => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.label}
+                className={`w-8 h-8 rounded-lg flex items-center justify-center text-white/40 bg-white/5 border border-white/8 transition-all duration-200 ${s.color}`}
+              >
+                {s.icon}
+              </a>
+            ))}
+          </div>
         </div>
 
-        <nav className="flex items-center gap-6">
-          <Link href="/" className="text-xs font-bold text-white/60 hover:text-white uppercase tracking-widest transition-colors">Home</Link>
-          <Link href="/movies" className="text-xs font-bold text-white/60 hover:text-white uppercase tracking-widest transition-colors">Movies</Link>
-          <Link href="/interpreted" className="text-xs font-bold text-white/60 hover:text-white uppercase tracking-widest transition-colors">Interpreted</Link>
-          <Link href="/vip" className="text-xs font-bold text-white/60 hover:text-white uppercase tracking-widest transition-colors">VIP</Link>
-        </nav>
+        <div>
+          <h4 className="text-white font-medium mb-4">Discover</h4>
+          <ul className="space-y-2">
+            <li><Link href="/movies" className="text-sm text-muted-foreground hover:text-white transition-colors">All Movies</Link></li>
+            <li><Link href="/movies?featured=true" className="text-sm text-muted-foreground hover:text-white transition-colors">Trending Now</Link></li>
+            <li><Link href="/movies?sort=popular" className="text-sm text-muted-foreground hover:text-white transition-colors">Popular</Link></li>
+          </ul>
+        </div>
 
-        <div className="flex items-center gap-4">
+        <div>
+          <h4 className="text-white font-medium mb-4">Account</h4>
+          <ul className="space-y-2">
+            <li><Link href="/profile" className="text-sm text-muted-foreground hover:text-white transition-colors">Profile</Link></li>
+            <li><Link href="/login" className="text-sm text-muted-foreground hover:text-white transition-colors">Sign In</Link></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="text-white font-medium mb-4">Legal</h4>
+          <ul className="space-y-2">
+            <li><span className="text-sm text-muted-foreground hover:text-white transition-colors cursor-pointer">Terms of Service</span></li>
+            <li><span className="text-sm text-muted-foreground hover:text-white transition-colors cursor-pointer">Privacy Policy</span></li>
+            <li><span className="text-sm text-muted-foreground hover:text-white transition-colors cursor-pointer">Cookie Policy</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p className="text-xs text-muted-foreground">
+          &copy; {new Date().getFullYear()} Feelms. All rights reserved.
+        </p>
+        <div className="flex items-center gap-3">
           {SOCIAL_LINKS.map(s => (
             <a
               key={s.label}
@@ -86,7 +124,7 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={s.label}
-              className="text-white/40 hover:text-white transition-colors"
+              className={`text-white/25 transition-colors duration-200 ${s.color.replace("hover:bg-", "hover:text-").split(" ")[0]}`}
             >
               {s.icon}
             </a>

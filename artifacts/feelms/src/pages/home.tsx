@@ -7,7 +7,6 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { HeroBanner } from "@/components/hero-banner";
 import { MovieRow } from "@/components/movie-row";
-import { GenreBanner } from "@/components/genre-banner";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Play, Clock } from "lucide-react";
@@ -64,7 +63,7 @@ function ContinueWatchingRow({ token }: { token: string | null }) {
         viewMoreHref="/history"
       />
       <Link href="/history"
-        className="absolute top-3 right-4 md:right-8 text-[10px] font-bold tracking-widest uppercase text-white/40 hover:text-white flex items-center gap-1 transition-colors">
+        className="absolute top-3 right-4 text-xs text-white/40 hover:text-white/70 flex items-center gap-1 transition-colors">
         <Clock className="w-3 h-3" /> History
       </Link>
     </div>
@@ -83,14 +82,11 @@ export default function Home() {
   const { data: allMovies }     = useGetMovies({});
 
   return (
-    <div className="pb-20 bg-background">
+    <div className="pb-20">
       <HeroBanner banners={banners || []} />
-      
-      <div className="relative z-10">
-        <GenreBanner />
-      </div>
 
-      <div className="space-y-6">
+      <div className="mt-[-80px] relative z-10 space-y-4">
+        {/* Continue Watching — only for authenticated users */}
         {isAuthenticated && <ContinueWatchingRow token={token} />}
 
         {trending && (
@@ -101,7 +97,7 @@ export default function Home() {
         )}
 
         {vipExclusives && vipExclusives.length > 0 && (
-          <MovieRow title="Featured VIP" movies={vipExclusives.slice(0, 30)} viewMoreHref="/vip" />
+          <MovieRow title="Featured" movies={vipExclusives.slice(0, 30)} viewMoreHref="/movies" />
         )}
 
         {GENRE_ROWS.map(row => (
