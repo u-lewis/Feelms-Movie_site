@@ -21,7 +21,6 @@ export function MovieRow({ title, movies, viewMoreHref }: MovieRowProps) {
 
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(true);
-  const [isRowHovered, setIsRowHovered] = useState(false);
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
@@ -46,53 +45,48 @@ export function MovieRow({ title, movies, viewMoreHref }: MovieRowProps) {
   if (!movies?.length) return null;
 
   return (
-    <div
-      className="py-2"
-      onMouseEnter={() => setIsRowHovered(true)}
-      onMouseLeave={() => setIsRowHovered(false)}
-    >
-      <div className="container mx-auto px-4 md:px-8 mb-4 flex items-center justify-between">
-        <h2 className="text-xl md:text-2xl font-semibold text-white tracking-tight">{title}</h2>
-        <div className={`flex gap-2 transition-opacity duration-200 ${isRowHovered ? "opacity-100" : "opacity-0"}`}>
+    <div className="py-2 group">
+      <div className="container mx-auto px-4 md:px-8 mb-3 flex items-center justify-between">
+        <h2 className="text-lg md:text-xl font-bold text-white tracking-tight">{title}</h2>
+        <div className="flex gap-1.5 opacity-50 group-hover:opacity-100 transition-opacity duration-200">
           <Button
             variant="ghost"
             size="icon"
             onClick={scrollPrev}
             disabled={!canScrollPrev}
-            className="h-8 w-8 rounded-full bg-white/5 hover:bg-white/10"
+            className="h-7 w-7 rounded bg-white/5 hover:bg-white/15 hover:text-white text-white/50"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-4 h-4" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
             onClick={scrollNext}
             disabled={!canScrollNext}
-            className="h-8 w-8 rounded-full bg-white/5 hover:bg-white/10"
+            className="h-7 w-7 rounded bg-white/5 hover:bg-white/15 hover:text-white text-white/50"
           >
-            <ChevronRight className="w-5 h-5" />
+            <ChevronRight className="w-4 h-4" />
           </Button>
         </div>
       </div>
 
       <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex pl-4 md:pl-8 -ml-2">
+        <div className="flex pl-4 md:pl-8 -ml-1">
           {movies.map((movie) => (
-            <div key={movie.id} className="flex-[0_0_160px] md:flex-[0_0_200px] lg:flex-[0_0_240px] min-w-0 pl-2 pr-2">
+            <div key={movie.id} className="flex-[0_0_120px] sm:flex-[0_0_140px] md:flex-[0_0_170px] lg:flex-[0_0_200px] min-w-0 pl-1 pr-1">
               <MovieCard movie={movie} />
             </div>
           ))}
 
           {viewMoreHref && (
-            <div className="flex-[0_0_160px] md:flex-[0_0_200px] lg:flex-[0_0_240px] min-w-0 pl-2 pr-4 md:pr-8">
+            <div className="flex-[0_0_120px] sm:flex-[0_0_140px] md:flex-[0_0_170px] lg:flex-[0_0_200px] min-w-0 pl-1 pr-4 md:pr-8">
               <Link href={viewMoreHref}>
-                <div className="aspect-[2/3] rounded-xl bg-white/3 border border-dashed border-white/15 hover:border-primary/50 hover:bg-primary/5 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-200 group">
-                  <div className="w-12 h-12 rounded-full bg-primary/15 border border-primary/25 flex items-center justify-center group-hover:bg-primary/30 group-hover:border-primary/50 transition-all duration-200">
-                    <ChevronRight className="w-6 h-6 text-primary group-hover:translate-x-0.5 transition-transform" />
+                <div className="aspect-[2/3] rounded bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-primary/5 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all duration-200 group/more">
+                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover/more:bg-primary/20 transition-all duration-200">
+                    <ChevronRight className="w-5 h-5 text-white/60 group-hover/more:text-primary transition-colors" />
                   </div>
                   <div className="text-center px-2">
-                    <p className="text-[11px] font-bold text-primary/80 group-hover:text-primary tracking-widest uppercase transition-colors">Load More</p>
-                    <p className="text-[10px] text-white/30 mt-0.5">See all →</p>
+                    <p className="text-[10px] font-bold text-white/60 group-hover/more:text-white tracking-widest uppercase transition-colors">See All</p>
                   </div>
                 </div>
               </Link>

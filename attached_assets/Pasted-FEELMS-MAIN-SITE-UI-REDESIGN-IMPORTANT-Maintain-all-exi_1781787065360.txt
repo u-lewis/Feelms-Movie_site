@@ -1,0 +1,82 @@
+FEELMS MAIN SITE UI REDESIGN
+IMPORTANT:
+•	Maintain all existing functionality.
+•	Do not modify backend logic, APIs, database connections, authentication, video playback, or admin dashboard functionality.
+•	Maintain full responsiveness across desktop, tablet, and mobile devices.
+•	Preserve existing SEO structure and performance optimization.
+DESIGN DIRECTION
+Redesign the Feelms main website using a modern Swiss-inspired minimalist design language.
+Color palette:
+•	Primary Red
+•	Black
+•	White
+Design principles:
+•	Clean layouts
+•	Strong visual hierarchy
+•	Consistent spacing
+•	Minimal decorative elements
+•	Modern typography
+•	Premium streaming-platform appearance
+GLOBAL CHANGES
+1.	Border Radius & Spacing
+•	Reduce border radius across cards, buttons, inputs, and containers.
+•	Reduce spacing between movie cards and content blocks slightly.
+•	Keep enough spacing for readability and touch accessibility.
+2.	Navigation
+•	For navigation the drawer/sidebar navigation will be used.
+•	Keep navigation intuitive on both desktop and mobile.
+3.	Icons
+•	Replace current icons with modern premium icons inspired by Apple's Human Interface Design.
+•	Use a consistent icon set throughout the site.
+HOME PAGE
+1.	Hero Swiper
+•	Redesign hero swiper based on provided design references.
+•	Improve typography hierarchy.
+•	Improve CTA placement.
+•	Add subtle overlays for readability.
+•	Keep existing functionality intact.
+2.	Genre Banner Row
+•	Directly below the hero swiper add a horizontally scrollable row of rectangular genre banners.
+•	Each banner represents a movie genre.
+•	Clicking a banner filters content by genre.
+•	These banners must be manageable through the Admin Dashboard.
+•	Add management controls inside the existing Hero Banner section.
+MOVIE CARDS
+1.	Card Size
+•	Slightly reduce card width and height.
+2.	Hover State
+•	Remove large play button overlay.
+•	Remove download icon overlay.
+•	Replace with a cleaner hover effect:
+o	subtle scale animation
+o	shadow enhancement
+o	title visibility improvement
+3.	Layout
+•	Improve information hierarchy.
+•	Keep metadata clean and compact.
+MOVIE DETAIL PAGE
+•	Reduce button sizes.
+•	Improve spacing consistency.
+•	Use a cleaner layout matching the new Swiss-style design.
+•	Maintain all existing functionality.
+FOOTER
+Redesign footer to be compact and minimal.
+Include:
+•	Feelms logo
+•	Feelms name beneath logo
+•	Copyright text
+•	Social media icons
+Requirements:
+•	Smaller height
+•	Cleaner spacing
+•	Minimal visual clutter
+•	Responsive layout
+QUALITY REQUIREMENTS
+•	Maintain accessibility standards.
+•	Maintain mobile-first responsiveness.
+•	Use smooth animations only where necessary.
+•	Ensure consistent spacing and typography across all pages.
+•	Follow provided desktop and mobile design references as closely as possible.
+•	Do not remove any existing functionality unless explicitly specified.
+•	Use standard swiss style design principles
+
