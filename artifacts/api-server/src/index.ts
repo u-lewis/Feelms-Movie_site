@@ -36,7 +36,9 @@ seedAdminAccount()
   .then(() => seedBannersData())
   .then(() => seedSectionsData())
   .then(() => {
-    app.listen(port, (err) => {
+    app.listen(port, "0.0.0.0", () => {
+  logger.info({ port }, "Server listening");
+});
       if (err) {
         logger.error({ err }, "Error listening on port");
         process.exit(1);
