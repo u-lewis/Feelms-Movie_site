@@ -29,16 +29,20 @@ async function seedAdminAccount() {
 
 const rawPort = process.env["PORT"];
 
-const port = Number(process.env.PORT || 3001);
+if (!rawPort) {
+  throw new Error("PORT environment variable is required but was not provided.");
+}
+
+if (Number.isNaN(port) || port <= 0) {
+  throw new Error(`Invalid PORT value: "${rawPort}"`);
+}
 seedAdminAccount()
   .then(() => seedSeriesData())
   .then(() => seedMoviesData())
   .then(() => seedBannersData())
   .then(() => seedSectionsData())
   .then(() => {
-    app.listen(port, "0.0.0.0", () => {
-  logger.info({ port }, "Server listening");
-});
+   app.listen(port, (err) => {
       if (err) {
         logger.error({ err }, "Error listening on port");
         process.exit(1);
