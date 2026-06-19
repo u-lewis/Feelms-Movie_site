@@ -69,81 +69,79 @@
 }
 
 :root {
-  /* Forced dark mode always */
   color-scheme: dark;
-  
+
   --button-outline: rgba(255,255,255, .10);
   --badge-outline: rgba(255,255,255, .05);
-
   --opaque-button-border-intensity: 9;
-
   --elevate-1: rgba(255,255,255, .04);
   --elevate-2: rgba(255,255,255, .09);
 
-  --background: 222 47% 5%;
-  --foreground: 210 40% 98%;
+  /* Deeper, richer near-black — like Netflix's #141414 */
+  --background: 0 0% 8%;
+  --foreground: 0 0% 98%;
 
-  --card: 222 47% 8%;
-  --card-foreground: 210 40% 98%;
-  --card-border: 222 47% 12%;
+  --card: 0 0% 11%;
+  --card-foreground: 0 0% 98%;
+  --card-border: 0 0% 15%;
 
-  --popover: 222 47% 8%;
-  --popover-foreground: 210 40% 98%;
-  --popover-border: 222 47% 12%;
+  --popover: 0 0% 11%;
+  --popover-foreground: 0 0% 98%;
+  --popover-border: 0 0% 15%;
 
   --primary: 0 84% 47%;
   --primary-foreground: 0 0% 100%;
 
-  --secondary: 222 47% 15%;
-  --secondary-foreground: 210 40% 98%;
+  --secondary: 0 0% 16%;
+  --secondary-foreground: 0 0% 98%;
 
-  --muted: 222 47% 12%;
-  --muted-foreground: 215 20.2% 65.1%;
+  --muted: 0 0% 14%;
+  --muted-foreground: 0 0% 55%;
 
   --accent: 0 84% 47%;
   --accent-foreground: 0 0% 100%;
 
   --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 210 40% 98%;
+  --destructive-foreground: 0 0% 98%;
 
-  --border: 222 47% 12%;
-  --input: 222 47% 15%;
+  --border: 0 0% 15%;
+  --input: 0 0% 16%;
   --ring: 0 84% 47%;
 
   --vip: 46 65% 52%;
 
   --chart-1: 0 84% 47%;
   --chart-2: 46 65% 52%;
-  --chart-3: 210 40% 98%;
+  --chart-3: 0 0% 98%;
   --chart-4: 280 65% 60%;
   --chart-5: 340 75% 55%;
 
-  --sidebar: 222 47% 7%;
-  --sidebar-foreground: 210 40% 98%;
-  --sidebar-border: 222 47% 12%;
+  --sidebar: 0 0% 9%;
+  --sidebar-foreground: 0 0% 98%;
+  --sidebar-border: 0 0% 14%;
   --sidebar-primary: 0 84% 47%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 222 47% 12%;
-  --sidebar-accent-foreground: 210 40% 98%;
+  --sidebar-accent: 0 0% 14%;
+  --sidebar-accent-foreground: 0 0% 98%;
   --sidebar-ring: 0 84% 47%;
 
-  --app-font-sans: 'Inter', sans-serif;
+  --app-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --app-font-serif: Georgia, serif;
-  --app-font-mono: Menlo, monospace;
+  --app-font-mono: 'SF Mono', Menlo, monospace;
   --radius: .5rem;
-  
-  --shadow-2xs: 0px 2px 0px 0px rgba(0,0,0, .5);
-  --shadow-xs: 0px 2px 0px 0px rgba(0,0,0, .5);
-  --shadow-sm: 0px 2px 0px 0px rgba(0,0,0, .5), 0px 1px 2px -1px rgba(0,0,0, .5);
-  --shadow: 0px 2px 0px 0px rgba(0,0,0, .5), 0px 1px 2px -1px rgba(0,0,0, .5);
-  --shadow-md: 0px 2px 0px 0px rgba(0,0,0, .5), 0px 2px 4px -1px rgba(0,0,0, .5);
-  --shadow-lg: 0px 2px 0px 0px rgba(0,0,0, .5), 0px 4px 6px -1px rgba(0,0,0, .5);
-  --shadow-xl: 0px 2px 0px 0px rgba(0,0,0, .5), 0px 8px 10px -1px rgba(0,0,0, .5);
-  --shadow-2xl: 0px 2px 0px 0px rgba(0,0,0, .5);
+
+  --shadow-2xs: 0px 2px 0px 0px rgba(0,0,0,.6);
+  --shadow-xs: 0px 2px 0px 0px rgba(0,0,0,.6);
+  --shadow-sm: 0px 2px 0px 0px rgba(0,0,0,.6), 0px 1px 2px -1px rgba(0,0,0,.6);
+  --shadow: 0px 2px 0px 0px rgba(0,0,0,.6), 0px 1px 2px -1px rgba(0,0,0,.6);
+  --shadow-md: 0px 2px 0px 0px rgba(0,0,0,.6), 0px 2px 4px -1px rgba(0,0,0,.6);
+  --shadow-lg: 0px 2px 0px 0px rgba(0,0,0,.6), 0px 4px 6px -1px rgba(0,0,0,.6);
+  --shadow-xl: 0px 2px 0px 0px rgba(0,0,0,.6), 0px 8px 10px -1px rgba(0,0,0,.6);
+  --shadow-2xl: 0px 2px 0px 0px rgba(0,0,0,.6);
 }
 
 .dark {
-  /* same as above */
+  /* same as :root */
 }
 
 @layer base {
@@ -154,17 +152,44 @@
   html {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+  }
+
+  /* Thin scrollbar for content rows */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.12);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.22);
   }
 }
 
 @layer utilities {
   .transition-cinematic {
     transition-property: all;
-    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition-duration: 300ms;
+  }
+
+  /* Gradient text utility */
+  .text-gradient-primary {
+    background: linear-gradient(135deg, hsl(0 84% 60%), hsl(0 84% 40%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }

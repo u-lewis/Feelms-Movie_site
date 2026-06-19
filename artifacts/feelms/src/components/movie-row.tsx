@@ -3,7 +3,6 @@ import useEmblaCarousel from "embla-carousel-react";
 import { Movie } from "@workspace/api-client-react";
 import { MovieCard } from "./movie-card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "./ui/button";
 import { Link } from "wouter";
 
 interface MovieRowProps {
@@ -21,7 +20,7 @@ export function MovieRow({ title, movies, viewMoreHref }: MovieRowProps) {
 
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(true);
-  const [isRowHovered, setIsRowHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
@@ -47,57 +46,75 @@ export function MovieRow({ title, movies, viewMoreHref }: MovieRowProps) {
 
   return (
     <div
-      className="py-2"
-      onMouseEnter={() => setIsRowHovered(true)}
-      onMouseLeave={() => setIsRowHovered(false)}
+      className="py-1"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="container mx-auto px-4 md:px-8 mb-4 flex items-center justify-between">
-        <h2 className="text-xl md:text-2xl font-semibold text-white tracking-tight">{title}</h2>
-        <div className={`flex gap-2 transition-opacity duration-200 ${isRowHovered ? "opacity-100" : "opacity-0"}`}>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={scrollPrev}
-            disabled={!canScrollPrev}
-            className="h-8 w-8 rounded-full bg-white/5 hover:bg-white/10"
+      {/* Section header */}
+      <div className="max-w-screen-xl mx-auto px-5 md:px-10 mb-3.5 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          {/* Red accent bar */}
+          <div className="w-[3px] h-5 bg-primary rounded-full shrink-0" />
+          <h2 className="text-base md:text-lg font-bold text-white tracking-tight">{title}</h2>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {/* Arrow controls — appear on hover */}
+          <div
+            className="flex items-center gap-1 transition-all duration-200"
+            style={{ opacity: isHovered ? 1 : 0, transform: isHovered ? "translateX(0)" : "translateX(6px)" }}
           >
-            <ChevronLeft className="w-5 h-5" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={scrollNext}
-            disabled={!canScrollNext}
-            className="h-8 w-8 rounded-full bg-white/5 hover:bg-white/10"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </Button>
+            <button
+              onClick={scrollPrev}
+              disabled={!canScrollPrev}
+              className="w-7 h-7 rounded-full flex items-center justify-center bg-white/[0.08] hover:bg-white/[0.14] disabled:opacity-20 disabled:cursor-not-allowed transition-all duration-150"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-4 h-4 text-white" />
+            </button>
+            <button
+              onClick={scrollNext}
+              disabled={!canScrollNext}
+              className="w-7 h-7 rounded-full flex items-center justify-center bg-white/[0.08] hover:bg-white/[0.14] disabled:opacity-20 disabled:cursor-not-allowed transition-all duration-150"
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="w-4 h-4 text-white" />
+            </button>
+          </div>
+
+          {/* See all link */}
+          {viewMoreHref && (
+            <Link
+              href={viewMoreHref}
+              className="text-xs font-medium text-white/35 hover:text-primary transition-colors duration-200 ml-1"
+            >
+              See all →
+            </Link>
+          )}
         </div>
       </div>
 
-      <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex pl-4 md:pl-8 -ml-2">
-          {movies.map((movie) => (
-            <div key={movie.id} className="flex-[0_0_160px] md:flex-[0_0_200px] lg:flex-[0_0_240px] min-w-0 pl-2 pr-2">
-              <MovieCard movie={movie} />
-            </div>
-          ))}
+      {/* Scroll strip with edge fades */}
+      <div className="relative">
+        {/* Left edge fade */}
+        <div className="absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        {/* Right edge fade */}
+        <div className="absolute right-0 top-0 bottom-0 w-14 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
 
-          {viewMoreHref && (
-            <div className="flex-[0_0_160px] md:flex-[0_0_200px] lg:flex-[0_0_240px] min-w-0 pl-2 pr-4 md:pr-8">
-              <Link href={viewMoreHref}>
-                <div className="aspect-[2/3] rounded-xl bg-white/3 border border-dashed border-white/15 hover:border-primary/50 hover:bg-primary/5 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-200 group">
-                  <div className="w-12 h-12 rounded-full bg-primary/15 border border-primary/25 flex items-center justify-center group-hover:bg-primary/30 group-hover:border-primary/50 transition-all duration-200">
-                    <ChevronRight className="w-6 h-6 text-primary group-hover:translate-x-0.5 transition-transform" />
-                  </div>
-                  <div className="text-center px-2">
-                    <p className="text-[11px] font-bold text-primary/80 group-hover:text-primary tracking-widest uppercase transition-colors">Load More</p>
-                    <p className="text-[10px] text-white/30 mt-0.5">See all →</p>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          )}
+        <div className="overflow-hidden" ref={emblaRef}>
+          <div className="flex pl-5 md:pl-10 gap-0">
+            {movies.map((movie) => (
+              <div
+                key={movie.id}
+                className="flex-[0_0_140px] sm:flex-[0_0_158px] md:flex-[0_0_175px] lg:flex-[0_0_192px] min-w-0 pr-3"
+              >
+                <MovieCard movie={movie} />
+              </div>
+            ))}
+
+            {/* End spacer */}
+            <div className="flex-[0_0_20px] md:flex-[0_0_30px] shrink-0" />
+          </div>
         </div>
       </div>
     </div>
