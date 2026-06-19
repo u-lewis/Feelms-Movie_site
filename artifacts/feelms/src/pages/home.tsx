@@ -19,40 +19,50 @@ const GENRE_ROWS: { title: string; genres: string[]; href: string }[] = [
   { title: "Comedy Night",        genres: ["Comedy"],                 href: "/movies?genre=Comedy" },
 ];
 
+function toArr<T>(v: unknown): T[] {
+  return Array.isArray(v) ? (v as T[]) : [];
+}
+
 function useGenreMovies(allMovies: Movie[] | undefined, genres: string[]): Movie[] {
   return useMemo(() => {
-    if (!allMovies) return [];
-    return allMovies.filter(m => (m.genres ?? []).some(g => genres.includes(g)));
+    const list = toArr<Movie>(allMovies);
+    return list.filter(m => (m.genres ?? []).some(g => genres.includes(g)));
   }, [allMovies, genres]);
 }
 
-function GenreRow({ title, genres, href, allMovies }: { title: string; genres: string[]; href: string; allMovies: Movie[] | undefined }) {
-  const movies = useGenreMovies(allMovies, genres);
+function GenreRow({ title, genres, href, allMovies }: { title: string; genres: string[]; href: string; allMovies: unknown }) {
+  const movies = useGenreMovies(toArr<Movie>(allMovies), genres);
   if (!movies.length) return null;
   return <MovieRow title={title} movies={movies.slice(0, 30)} viewMoreHref={href} />;
 }
 
 export default function Home() {
-  const { data: banners }       = useGetBanners({ all: false }, { query: { queryKey: getGetBannersQueryKey({ all: false }) } });
-  const { data: trending }      = useGetTrendingMovies({ query: { queryKey: getGetTrendingMoviesQueryKey() } });
-  const { data: newReleases }   = useGetNewReleases({ query: { queryKey: getGetNewReleasesQueryKey() } });
-  const { data: vipExclusives } = useGetVipExclusives({ query: { queryKey: getGetVipExclusivesQueryKey() } });
-  const { data: sections }      = useGetSections({ all: false }, { query: { queryKey: getGetSectionsQueryKey({ all: false }) } });
-  const { data: allMovies }     = useGetMovies({});
+  const { data: bannersRaw }      = useGetBanners({ all: false }, { query: { queryKey: getGetBannersQueryKey({ all: false }) } });
+  const { data: trendingRaw }     = useGetTrendingMovies({ query: { queryKey: getGetTrendingMoviesQueryKey() } });
+  const { data: newReleasesRaw }  = useGetNewReleases({ query: { queryKey: getGetNewReleasesQueryKey() } });
+  const { data: vipRaw }          = useGetVipExclusives({ query: { queryKey: getGetVipExclusivesQueryKey() } });
+  const { data: sectionsRaw }     = useGetSections({ all: false }, { query: { queryKey: getGetSectionsQueryKey({ all: false }) } });
+  const { data: allMoviesRaw }    = useGetMovies({});
+
+  const banners      = toArr(bannersRaw);
+  const trending     = toArr<Movie>(trendingRaw);
+  const newReleases  = toArr<Movie>(newReleasesRaw);
+  const vipExclusives = toArr<Movie>(vipRaw);
+  const sections     = toArr<any>(sectionsRaw);
+  const allMovies    = toArr<Movie>(allMoviesRaw);
 
   return (
     <div className="pb-20">
-      <HeroBanner banners={banners || []} />
+      <HeroBanner banners={banners} />
 
-      <div className="mt-[-80px] relative z-10 space-y-4">
-        {trending && (
+      <div className="relative z-10 space-y-4">
+        {trending.length > 0 && (
           <MovieRow title="Trending Now" movies={trending.slice(0, 30)} viewMoreHref="/movies?sort=popular" />
         )}
-        {newReleases && (
+        {newReleases.length > 0 && (
           <MovieRow title="New Releases" movies={newReleases.slice(0, 30)} viewMoreHref="/movies?sort=newest" />
         )}
-
-        {vipExclusives && vipExclusives.length > 0 && (
+        {vipExclusives.length > 0 && (
           <MovieRow title="Featured" movies={vipExclusives.slice(0, 30)} viewMoreHref="/movies" />
         )}
 
@@ -60,12 +70,12 @@ export default function Home() {
           <GenreRow key={row.title} title={row.title} genres={row.genres} href={row.href} allMovies={allMovies} />
         ))}
 
-        {sections?.map(section =>
+        {sections.map((section: any) =>
           section.movies && section.movies.length > 0 ? (
             <MovieRow
               key={section.id}
               title={section.title}
-              movies={section.movies.slice(0, 30)}
+              movies={toArr<Movie>(section.movies).slice(0, 30)}
               viewMoreHref={`/movies?genre=${encodeURIComponent(section.title)}`}
             />
           ) : null

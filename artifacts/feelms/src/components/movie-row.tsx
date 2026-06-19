@@ -12,6 +12,8 @@ interface MovieRowProps {
 }
 
 export function MovieRow({ title, movies, viewMoreHref }: MovieRowProps) {
+  const movieList: Movie[] = Array.isArray(movies) ? movies : [];
+
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     containScroll: "trimSnaps",
@@ -42,7 +44,7 @@ export function MovieRow({ title, movies, viewMoreHref }: MovieRowProps) {
     };
   }, [emblaApi, onSelect]);
 
-  if (!movies?.length) return null;
+  if (!movieList.length) return null;
 
   return (
     <div
@@ -103,7 +105,7 @@ export function MovieRow({ title, movies, viewMoreHref }: MovieRowProps) {
 
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex pl-5 md:pl-10 gap-0">
-            {movies.map((movie) => (
+            {movieList.map((movie) => (
               <div
                 key={movie.id}
                 className="flex-[0_0_140px] sm:flex-[0_0_158px] md:flex-[0_0_175px] lg:flex-[0_0_192px] min-w-0 pr-3"

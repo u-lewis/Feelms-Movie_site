@@ -74,6 +74,8 @@ const SORT_OPTIONS: { value: SortKey; label: string }[] = [
 
 type ContentType = "all" | "MOVIE" | "SERIES";
 
+function toArr<T>(v: unknown): T[] { return Array.isArray(v) ? (v as T[]) : []; }
+
 export default function Movies() {
   const [location] = useLocation();
   const urlParams = new URLSearchParams(location.split("?")[1] || "");
@@ -98,7 +100,7 @@ export default function Movies() {
 
   const allInterpreters = useMemo(() => {
     const set = new Set<string>();
-    (allMovies ?? []).forEach((m: any) => {
+    toArr<any>(allMovies).forEach((m: any) => {
       if (m.interpreted && Array.isArray(m.interpreters)) {
         m.interpreters.forEach((n: string) => { if (n) set.add(n); });
       }
@@ -115,7 +117,7 @@ export default function Movies() {
   ].filter(Boolean).length;
 
   const results = useMemo(() => {
-    let list = allMovies ?? [];
+    let list: any[] = toArr<any>(allMovies);
 
     if (contentType !== "all") {
       list = list.filter((m) => (m as any).contentType === contentType);

@@ -47,8 +47,8 @@ export default function Category() {
   const { data: allMovies, isLoading } = useGetMovies({});
 
   const movies = useMemo(() => {
-    if (!allMovies) return [];
-    return allMovies.filter((m) =>
+    const list = Array.isArray(allMovies) ? allMovies : [];
+    return list.filter((m) =>
       (m.genres ?? []).some((g) => g.toLowerCase() === genre.toLowerCase())
     );
   }, [allMovies, genre]);

@@ -327,26 +327,34 @@ export default function MovieDetail() {
   const currentMirrors = selectedQuality ? vipLinks.find(r => r.quality === selectedQuality)?.mirrors ?? [] : [];
 
   return (
-    <div className="relative min-h-screen pb-20">
-      <div className="absolute inset-0 h-[60vh] w-full z-0 overflow-hidden pointer-events-none">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="relative min-h-screen pb-20"
+    >
+      {/* Blurred background poster */}
+      <div className="absolute inset-0 h-[65vh] w-full z-0 overflow-hidden pointer-events-none">
         {movie.poster && (
           <>
-            <img src={movie.poster} alt="" className="w-full h-full object-cover blur-2xl scale-110 opacity-20" />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-background/70 to-background" />
+            <img src={movie.poster} alt="" className="w-full h-full object-cover blur-3xl scale-110 opacity-25" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-background/75 to-background" />
           </>
         )}
       </div>
 
       <div className="relative z-10">
-        <div className="container mx-auto px-4 pt-6">
-          <Button variant="ghost" asChild className="text-white/60 hover:text-white hover:bg-white/10 mb-4">
-            <Link href="/movies"><ArrowLeft className="w-4 h-4 mr-2" /> Back to browse</Link>
-          </Button>
+        <div className="container mx-auto px-4 pt-6 pb-2">
+          <Link href="/movies">
+            <button className="inline-flex items-center gap-2 text-white/50 hover:text-white bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.08] backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-[1.02] active:scale-95 mb-5">
+              <ArrowLeft className="w-4 h-4" /> Back to browse
+            </button>
+          </Link>
         </div>
 
         {/* ── VIDEO PLAYER ── */}
         <div className="container mx-auto px-4 mb-4">
-          <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-black shadow-2xl shadow-black/60">
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/[0.12] bg-black shadow-[0_32px_80px_rgba(0,0,0,0.8)] ring-1 ring-white/[0.04]">
             {playerContent ?? (
               <>
                 {movie.poster && (
@@ -406,7 +414,7 @@ export default function MovieDetail() {
         {/* ── SERIES EPISODE PANEL (below player) ── */}
         {isSeries && (
           <div className="container mx-auto px-4 mb-8">
-            <div className="bg-card/60 border border-white/8 rounded-2xl overflow-hidden backdrop-blur-sm">
+            <div className="bg-white/[0.04] backdrop-blur-2xl border border-white/[0.08] rounded-2xl overflow-hidden shadow-xl shadow-black/30">
               {/* Season selector header */}
               <div className="flex items-center justify-between px-5 py-3 border-b border-white/5">
                 <div className="flex items-center gap-2">
@@ -514,7 +522,12 @@ export default function MovieDetail() {
         )}
 
         {/* ── MOVIE INFO ── */}
-        <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+          className="container mx-auto px-4"
+        >
           <div className="flex flex-col md:flex-row gap-8 lg:gap-12">
             <div className="hidden md:block w-[180px] shrink-0">
               <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl relative aspect-[2/3] bg-card">
@@ -622,23 +635,37 @@ export default function MovieDetail() {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* ── SUGGESTED MOVIES ── */}
         {finalSuggested.length > 0 && (
           <div className="container mx-auto px-4 mt-14 pb-16">
-            <div className="mb-5">
-              <h2 className="text-xl font-bold text-white tracking-tight">You Might Also Like</h2>
-              <p className="text-sm text-white/40 mt-0.5">Based on {movie.genres?.join(", ") || "similar genres"}</p>
+            <div className="mb-5 flex items-center gap-2.5">
+              <div className="w-[3px] h-5 bg-primary rounded-full shrink-0" />
+              <div>
+                <h2 className="text-xl font-bold text-white tracking-tight">You Might Also Like</h2>
+                <p className="text-sm text-white/35 mt-0.5">Based on {movie.genres?.join(", ") || "similar genres"}</p>
+              </div>
             </div>
-            <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            <motion.div
+              ref={gridRef}
+              variants={{ hidden: {}, show: { transition: { staggerChildren: 0.045 } } }}
+              initial="hidden"
+              animate="show"
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"
+            >
               {finalSuggested.slice(0, visibleCount >= finalSuggested.length
                 ? finalSuggested.length
                 : Math.floor(visibleCount / gridCols) * gridCols
               ).map((m) => (
-                <MovieCard key={m.id} movie={m} />
+                <motion.div
+                  key={m.id}
+                  variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.22,1,0.36,1] } } }}
+                >
+                  <MovieCard movie={m} />
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
             {visibleCount < finalSuggested.length && (
               <div ref={sentinelRef} className="flex justify-center items-center py-8">
                 <Loader2 className="w-6 h-6 text-white/30 animate-spin" />
@@ -650,7 +677,7 @@ export default function MovieDetail() {
 
       {/* ── DOWNLOAD DIALOG ── */}
       <Dialog open={downloadOpen} onOpenChange={setDownloadOpen}>
-        <DialogContent className="bg-card border-white/10 text-white max-w-md">
+        <DialogContent className="bg-[hsl(0_0%_11%)] backdrop-blur-2xl border-white/[0.08] text-white max-w-md shadow-2xl rounded-2xl">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Download className="w-5 h-5 text-primary" /> Download — {movie.title}
@@ -716,7 +743,7 @@ export default function MovieDetail() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.92, y: 16 }}
               transition={{ type: "spring", stiffness: 380, damping: 26 }}
-              className="fixed z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-32px)] max-w-sm bg-card border border-white/10 rounded-2xl shadow-2xl overflow-hidden"
+              className="fixed z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100vw-32px)] max-w-sm bg-[hsl(0_0%_11%)] backdrop-blur-2xl border border-white/[0.09] rounded-2xl shadow-[0_32px_80px_rgba(0,0,0,0.7)] overflow-hidden"
             >
               {/* Header */}
               <div className="flex items-center justify-between px-5 pt-5 pb-3">
@@ -822,6 +849,6 @@ export default function MovieDetail() {
           </>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }

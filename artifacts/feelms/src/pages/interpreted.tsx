@@ -5,7 +5,7 @@ import { Languages, Loader2 } from "lucide-react";
 export default function Interpreted() {
   const { data: movies, isLoading } = useGetMovies({ interpreted: true } as any);
 
-  const interpreted = (movies ?? []).filter((m: any) => m.interpreted);
+  const interpreted = (Array.isArray(movies) ? movies : []).filter((m: any) => m.interpreted);
 
   return (
     <div className="container mx-auto px-4 py-8">
