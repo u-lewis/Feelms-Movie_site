@@ -14,6 +14,7 @@ import MovieDetail from "@/pages/movie-detail";
 import TVChannels from "@/pages/tv";
 import Interpreted from "@/pages/interpreted";
 import Category from "@/pages/category";
+import AdRedirect from "@/pages/ad-redirect";
 
 const queryClient = new QueryClient({
   defaultOptions: {
