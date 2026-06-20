@@ -55,7 +55,7 @@ export default function WatchHistoryPage() {
     queryKey: ["watch-history"],
     queryFn: async () => {
       const token = localStorage.getItem("feelms_token");
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/watch-history", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/watch-history`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) return [];

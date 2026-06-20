@@ -49,7 +49,7 @@ export default function Profile() {
     setEditSaving(true);
     try {
       const token = localStorage.getItem("feelms_token");
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/profile", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/profile`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({
