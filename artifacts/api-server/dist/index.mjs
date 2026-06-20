@@ -63433,7 +63433,7 @@ var admin_settings_default = router11;
 // src/routes/sitemap.ts
 var import_express12 = __toESM(require_express2(), 1);
 var router12 = (0, import_express12.Router)();
-var SITE_URL = process.env.SITE_URL ?? "https://feelms.test";
+var SITE_URL = process.env.SITE_URL ?? "https://feelms-main.vercel.app";
 function slugify(text2) {
   return text2.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-").trim();
 }
@@ -63455,8 +63455,7 @@ router12.get("/sitemap.xml", async (_req, res) => {
     { loc: `${SITE_URL}/category/sci-fi`, priority: "0.7", changefreq: "weekly" },
     { loc: `${SITE_URL}/category/thriller`, priority: "0.7", changefreq: "weekly" },
     { loc: `${SITE_URL}/category/animation`, priority: "0.7", changefreq: "weekly" },
-    { loc: `${SITE_URL}/category/anime`, priority: "0.7", changefreq: "weekly" },
-    { loc: `${SITE_URL}/vip`, priority: "0.8", changefreq: "monthly" }
+    { loc: `${SITE_URL}/category/anime`, priority: "0.7", changefreq: "weekly" }
   ];
   const movieUrls = movies.map((m) => ({
     loc: `${SITE_URL}/movie/${slugify(m.title)}-${m.id}`,
@@ -63481,13 +63480,10 @@ ${allUrls.map((u) => `  <url>
 router12.get("/robots.txt", (_req, res) => {
   const content = `User-agent: *
 Allow: /
-
-# Disallow admin area
 Disallow: /admin/
-Disallow: /login/admin
+Disallow: /download
+Disallow: /login
 Disallow: /2fa
-
-# Sitemap
 Sitemap: ${SITE_URL}/api/sitemap.xml
 `;
   res.setHeader("Content-Type", "text/plain");
