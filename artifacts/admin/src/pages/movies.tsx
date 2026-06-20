@@ -293,7 +293,7 @@ export default function MoviesPage() {
                 <td className="px-5 py-3.5 text-right">
                   <div className="flex items-center justify-end gap-1">
                     <button onClick={() => handleEdit(movie)} className="p-1.5 text-white/40 hover:text-white rounded-lg hover:bg-white/8 transition-all"><Edit className="w-3.5 h-3.5" /></button>
-                    {movie.contentType === "SERIES" && <button onClick={() => setLocation(`/movies/${movie.id}/episodes`)} className="p-1.5 text-white/40 hover:text-primary rounded-lg hover:bg-white/8 transition-all" title="Manage Episodes"><Tv2 className="w-3.5 h-3.5" /></button>}
+                    {(movie as any).contentType === "SERIES" && <button onClick={() => setLocation(`/movies/${movie.id}/episodes`)} className="p-1.5 text-white/40 hover:text-primary rounded-lg hover:bg-white/8 transition-all" title="Manage Episodes"><Tv2 className="w-3.5 h-3.5" /></button>}
                     <button onClick={() => handleDelete(movie.id)} className="p-1.5 text-destructive/50 hover:text-destructive rounded-lg hover:bg-destructive/10 transition-all"><Trash2 className="w-3.5 h-3.5" /></button>
                   </div>
                 </td>
