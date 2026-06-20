@@ -53,7 +53,7 @@ export default function Home() {
 
   return (
     <div className="pb-20">
-      <HeroBanner banners={banners} />
+      <HeroBanner banners={banners as any} />
 
       <div className="relative z-10 space-y-4">
         {trending.length > 0 && (

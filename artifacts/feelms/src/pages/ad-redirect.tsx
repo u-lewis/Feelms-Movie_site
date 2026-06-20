@@ -16,6 +16,7 @@ export default function AdRedirect() {
       done.current = true;
       window.open(url, "_blank");
       setTimeout(() => { window.location.href = returnUrl; }, 300);
+      return undefined;
     }
     if (countdown > 0) {
       const t = setTimeout(() => setCountdown(c => c - 1), 1000);

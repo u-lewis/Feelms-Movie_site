@@ -128,7 +128,7 @@ export default function Movies() {
         (m) =>
           m.title.toLowerCase().includes(q) ||
           m.description?.toLowerCase().includes(q) ||
-          m.genres?.some((g) => g.toLowerCase().includes(q)),
+          m.genres?.some((g: string) => g.toLowerCase().includes(q)),
       );
     }
     if (genre !== "All") list = list.filter((m) => m.genres?.includes(genre));

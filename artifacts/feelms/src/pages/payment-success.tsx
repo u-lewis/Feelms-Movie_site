@@ -61,7 +61,7 @@ export default function PaymentSuccess() {
           </div>
           <h1 className="text-4xl font-bold text-white mb-3 tracking-tight">
             Welcome to VIP,{" "}
-            <span className="text-vip">{user?.username || "Member"}</span>!
+            <span className="text-vip">{user?.email?.split('@')[0] || "Member"}</span>!
           </h1>
           <p className="text-muted-foreground text-lg mb-8">
             Your subscription is now active. Enjoy the full Feelms experience.
