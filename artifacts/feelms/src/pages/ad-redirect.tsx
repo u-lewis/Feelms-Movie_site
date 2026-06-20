@@ -2,30 +2,25 @@ import { useEffect, useState, useRef } from "react";
 import { Download, Shield } from "lucide-react";
 
 export default function AdRedirect() {
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(3);
   const adsInitialized = useRef(false);
-  const downloadOpened = useRef(false);
+  const done = useRef(false);
 
   const params = new URLSearchParams(window.location.search);
-  const url = params.get("url");
+  const url = params.get("url") ?? "";
   const title = params.get("title") ?? "your file";
   const returnUrl = params.get("return") ?? "/";
 
   useEffect(() => {
-    if (countdown === 0) {
-      // Open download in new tab
-      if (!downloadOpened.current && url) {
-        window.open(url, "_blank");
-        downloadOpened.current = true;
-      }
-      // Return to movie page
-      setTimeout(() => {
-        window.location.href = returnUrl;
-      }, 500);
-      return;
+    if (countdown === 0 && !done.current) {
+      done.current = true;
+      window.open(url, "_blank");
+      setTimeout(() => { window.location.href = returnUrl; }, 300);
     }
-    const t = setTimeout(() => setCountdown(c => c - 1), 1000);
-    return () => clearTimeout(t);
+    if (countdown > 0) {
+      const t = setTimeout(() => setCountdown(c => c - 1), 1000);
+      return () => clearTimeout(t);
+    }
   }, [countdown]);
 
   useEffect(() => {
@@ -57,21 +52,20 @@ export default function AdRedirect() {
           <Download className="w-8 h-8 text-primary" />
         </div>
         <p className="text-white/40 text-xs uppercase tracking-widest mb-2">Preparing download</p>
-        <h1 className="text-xl font-bold mb-1">{title}</h1>
-        <p className="text-white/40 text-sm mb-6">Your download will start in {countdown}s</p>
+        <h1 className="text-xl font-bold mb-6">{title}</h1>
 
         <div className="relative w-24 h-24 mx-auto mb-4">
           <svg className="w-24 h-24 -rotate-90" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="45" fill="none" stroke="white" strokeOpacity="0.1" strokeWidth="8" />
             <circle cx="50" cy="50" r="45" fill="none" stroke="hsl(var(--primary))" strokeWidth="8"
               strokeDasharray={`${2 * Math.PI * 45}`}
-              strokeDashoffset={`${2 * Math.PI * 45 * (countdown / 5)}`}
+              strokeDashoffset={`${2 * Math.PI * 45 * (countdown / 3)}`}
               style={{ transition: "stroke-dashoffset 1s linear" }}
             />
           </svg>
           <span className="absolute inset-0 flex items-center justify-center text-3xl font-bold">{countdown}</span>
         </div>
-        <p className="text-white/30 text-xs mb-6">Please wait while ads load...</p>
+        <p className="text-white/30 text-xs mb-6">Download starts in {countdown}s...</p>
 
         <div className="flex items-center justify-center gap-1.5 text-white/20 text-xs">
           <Shield className="w-3 h-3" />
