@@ -748,11 +748,11 @@ export default function MovieDetail() {
                   <p className="text-xs text-white/40 uppercase tracking-wider mb-2">{selectedQuality} Mirrors</p>
                   <div className="space-y-2">
                     {currentMirrors.map((url, i) => (
-                      <a key={i} href={`/download?url=${encodeURIComponent(url)}&title=${encodeURIComponent((movie as any).title)}`}
-                        className="flex items-center justify-between bg-black/40 border border-white/10 hover:border-primary/40 hover:bg-primary/5 rounded-lg px-4 py-3 transition-all group">
+                      <button key={i} onClick={() => { setDownloadOpen(false); window.open(url, "_blank"); }}
+                        className="flex items-center justify-between bg-black/40 border border-white/10 hover:border-primary/40 hover:bg-primary/5 rounded-lg px-4 py-3 transition-all group w-full">
                         <span className="text-sm text-white/80 group-hover:text-white">Mirror {i + 1}</span>
                         <ExternalLink className="w-4 h-4 text-white/30 group-hover:text-primary" />
-                      </a>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -760,9 +760,7 @@ export default function MovieDetail() {
             </div>
           ) : freeDownloadUrl ? (
             <div className="mt-3">
-              <a href={`/download?url=${encodeURIComponent(freeDownloadUrl ?? "")}&title=${encodeURIComponent((movie as any).title)}`}>
-                <Button className="w-full bg-primary hover:bg-primary/90"><Download className="w-4 h-4 mr-2" /> Download Now <ExternalLink className="w-3.5 h-3.5 ml-2 opacity-60" /></Button>
-              </a>
+              <Button onClick={() => { setDownloadOpen(false); window.open(freeDownloadUrl ?? "", "_blank"); }} className="w-full bg-primary hover:bg-primary/90"><Download className="w-4 h-4 mr-2" /> Download Now <ExternalLink className="w-3.5 h-3.5 ml-2 opacity-60" /></Button>
             </div>
           ) : (
             <p className="text-white/40 text-sm text-center py-6">No download links available yet.</p>
