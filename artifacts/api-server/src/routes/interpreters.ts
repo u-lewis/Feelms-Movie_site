@@ -32,7 +32,7 @@ router.post("/interpreters", requireAuth, requireAdmin, async (req, res): Promis
 });
 
 router.patch("/interpreters/:id", requireAuth, requireAdmin, async (req, res): Promise<void> => {
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(req.params["id"] as string, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
 
   // Fetch the current record so we know the old name before updating
@@ -60,7 +60,7 @@ router.patch("/interpreters/:id", requireAuth, requireAdmin, async (req, res): P
 });
 
 router.delete("/interpreters/:id", requireAuth, requireAdmin, async (req, res): Promise<void> => {
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(req.params["id"] as string, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
 
   const [row] = await db.delete(interpretersTable).where(eq(interpretersTable.id, id)).returning();

@@ -24,7 +24,7 @@ function serializeEpisode(e: any) {
 }
 
 router.get("/movies/:id/episodes", async (req, res): Promise<void> => {
-  const movieId = parseInt(req.params.id, 10);
+  const movieId = parseInt(req.params["id"] as string, 10);
   if (isNaN(movieId)) { res.status(400).json({ error: "Invalid movie id" }); return; }
 
   const episodes = await db.select().from(episodesTable)
@@ -35,7 +35,7 @@ router.get("/movies/:id/episodes", async (req, res): Promise<void> => {
 });
 
 router.post("/movies/:id/episodes", requireAuth, requireAdmin, async (req, res): Promise<void> => {
-  const movieId = parseInt(req.params.id, 10);
+  const movieId = parseInt(req.params["id"] as string, 10);
   if (isNaN(movieId)) { res.status(400).json({ error: "Invalid movie id" }); return; }
 
   const { season, episodeNumber, title, description, streamUrl, downloadUrl, thumbnail, duration, vipOnly, subtitles } = req.body;
@@ -59,7 +59,7 @@ router.post("/movies/:id/episodes", requireAuth, requireAdmin, async (req, res):
 });
 
 router.patch("/movies/:id/episodes/:epId", requireAuth, requireAdmin, async (req, res): Promise<void> => {
-  const epId = parseInt(req.params.epId, 10);
+  const epId = parseInt(req.params["epId"] as string, 10);
   if (isNaN(epId)) { res.status(400).json({ error: "Invalid episode id" }); return; }
 
   const { season, episodeNumber, title, description, streamUrl, downloadUrl, thumbnail, duration, vipOnly, subtitles } = req.body;
@@ -82,7 +82,7 @@ router.patch("/movies/:id/episodes/:epId", requireAuth, requireAdmin, async (req
 });
 
 router.delete("/movies/:id/episodes/:epId", requireAuth, requireAdmin, async (req, res): Promise<void> => {
-  const epId = parseInt(req.params.epId, 10);
+  const epId = parseInt(req.params["epId"] as string, 10);
   if (isNaN(epId)) { res.status(400).json({ error: "Invalid episode id" }); return; }
 
   await db.delete(episodesTable).where(eq(episodesTable.id, epId));
