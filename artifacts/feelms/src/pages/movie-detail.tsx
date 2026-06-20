@@ -149,7 +149,34 @@ export default function MovieDetail() {
     setMeta(`meta[name="twitter:title"]`, title);
     setMeta(`meta[name="twitter:description"]`, description);
     setMeta(`meta[name="twitter:image"]`, image);
-    return () => { document.title = "Feelms — Watch Movies & TV Online Free"; };
+    // JSON-LD structured data
+    const existing = document.getElementById("movie-jsonld");
+    if (existing) existing.remove();
+    const script = document.createElement("script");
+    script.id = "movie-jsonld";
+    script.type = "application/ld+json";
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": (movie as any).contentType === "SERIES" ? "TVSeries" : "Movie",
+      "name": (movie as any).title,
+      "description": description,
+      "image": image,
+      "dateCreated": (movie as any).year ? String((movie as any).year) : undefined,
+      "genre": (movie as any).genres ?? [],
+      "aggregateRating": (movie as any).rating ? {
+        "@type": "AggregateRating",
+        "ratingValue": (movie as any).rating,
+        "bestRating": "10",
+        "ratingCount": (movie as any).watchCount ?? 1
+      } : undefined,
+      "duration": (movie as any).duration ?? undefined,
+    });
+    document.head.appendChild(script);
+    return () => {
+      document.title = "Feelms — Watch Movies & TV Online Free";
+      const s = document.getElementById("movie-jsonld");
+      if (s) s.remove();
+    };
   }, [movie]);
 
   useEffect(() => {
