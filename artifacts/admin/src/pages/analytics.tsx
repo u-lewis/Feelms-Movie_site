@@ -23,9 +23,9 @@ export default function AnalyticsPage() {
   if (!stats) return null;
 
   const userDistribution = [
-    { name: "Free", value: stats.freeUsers },
+    { name: "Free", value: stats.freeUsers ?? 0 },
     { name: "VIP", value: stats.vipUsers },
-    { name: "Admin", value: stats.totalUsers - stats.freeUsers - stats.vipUsers },
+    { name: "Admin", value: stats.totalUsers - stats.freeUsers ?? 0 - stats.vipUsers },
   ];
 
   const movieData = stats.topMovies.map((m) => ({
