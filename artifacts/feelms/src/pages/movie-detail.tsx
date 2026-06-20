@@ -184,6 +184,7 @@ export default function MovieDetail() {
       const t = setTimeout(() => setShowSplash(false), 800);
       return () => clearTimeout(t);
     }
+    return undefined;
   }, [isLoading, movie]);
 
   // Fetch episodes for series

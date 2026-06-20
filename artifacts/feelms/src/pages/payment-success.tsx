@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { motion } from "framer-motion";
 
 export default function PaymentSuccess() {
-  const { isVip, user } = useAuth();
+  const { user } = useAuth();
   const [, setLocation] = useLocation();
   const [countdown, setCountdown] = useState(5);
 

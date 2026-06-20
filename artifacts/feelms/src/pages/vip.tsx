@@ -18,7 +18,7 @@ const schema = z.object({
 });
 
 export default function Vip() {
-  const { isAuthenticated, isVip, user } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const initiatePayment = useInitiatePayment();
   const verifyPayment = useVerifyPayment();
   const [, setLocation] = useLocation();
@@ -58,7 +58,7 @@ export default function Vip() {
     });
   };
 
-  if (isVip && user?.role !== "ADMIN") {
+  if (false && user?.role !== "ADMIN") {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
         <Crown className="w-16 h-16 text-vip mx-auto mb-6" />
