@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 import { useGetMovies, getGetMoviesQueryKey, useCreateMovie, useUpdateMovie, useDeleteMovie, useGetInterpreters } from "@workspace/api-client-react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -197,6 +198,7 @@ export default function MoviesPage() {
   const queryClient = useQueryClient();
   const { data: movies, isLoading } = useGetMovies({}, { query: { queryKey: getGetMoviesQueryKey() } });
   const deleteMutation = useDeleteMovie();
+  const [, setLocation] = useLocation();
   const [panelOpen, setPanelOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editingData, setEditingData] = useState<Partial<FormValues>>({});
@@ -291,7 +293,7 @@ export default function MoviesPage() {
                 <td className="px-5 py-3.5 text-right">
                   <div className="flex items-center justify-end gap-1">
                     <button onClick={() => handleEdit(movie)} className="p-1.5 text-white/40 hover:text-white rounded-lg hover:bg-white/8 transition-all"><Edit className="w-3.5 h-3.5" /></button>
-                    {movie.contentType === "SERIES" && <button onClick={() => window.location.href=`/movies/${movie.id}/episodes`} className="p-1.5 text-white/40 hover:text-primary rounded-lg hover:bg-white/8 transition-all" title="Manage Episodes"><Tv2 className="w-3.5 h-3.5" /></button>}
+                    {movie.contentType === "SERIES" && <button onClick={() => setLocation(`/movies/${movie.id}/episodes`)} className="p-1.5 text-white/40 hover:text-primary rounded-lg hover:bg-white/8 transition-all" title="Manage Episodes"><Tv2 className="w-3.5 h-3.5" /></button>}
                     <button onClick={() => handleDelete(movie.id)} className="p-1.5 text-destructive/50 hover:text-destructive rounded-lg hover:bg-destructive/10 transition-all"><Trash2 className="w-3.5 h-3.5" /></button>
                   </div>
                 </td>
