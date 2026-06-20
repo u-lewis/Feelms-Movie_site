@@ -25,7 +25,7 @@ export default function TwoFAPage() {
     setIsPending(true);
     try {
       const tempToken = sessionStorage.getItem("admin_2fa_temp_token");
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/2fa/verify", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/2fa/verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${tempToken}` },
         body: JSON.stringify({ code }),
