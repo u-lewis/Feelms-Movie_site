@@ -35,6 +35,7 @@ function Router() {
             <Route path="/category/:slug" component={Category} />
             <Route path="/tv" component={TVChannels} />
             <Route path="/interpreted" component={Interpreted} />
+            <Route path="/download" component={AdRedirect} />
             <Route component={NotFound} />
           </Switch>
         </Layout>
