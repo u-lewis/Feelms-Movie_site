@@ -4,7 +4,7 @@ import { desc } from "drizzle-orm";
 
 const router: IRouter = Router();
 
-const SITE_URL = process.env.SITE_URL ?? "https://feelms.vercel.app";
+const SITE_URL = process.env.SITE_URL ?? "https://feelms-main.vercel.app";
 
 function slugify(text: string): string {
   return text
@@ -71,7 +71,8 @@ router.get("/robots.txt", (_req, res): void => {
   const content = `User-agent: *
 Allow: /
 Disallow: /admin/
-Disallow: /login/admin
+Disallow: /download
+Disallow: /login
 Disallow: /2fa
 Sitemap: ${SITE_URL}/api/sitemap.xml
 `;
