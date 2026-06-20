@@ -4,7 +4,7 @@ import { desc } from "drizzle-orm";
 
 const router: IRouter = Router();
 
-const SITE_URL = process.env.SITE_URL ?? "https://feelms.test";
+const SITE_URL = process.env.SITE_URL ?? "https://feelms.vercel.app";
 
 function slugify(text: string): string {
   return text
@@ -15,6 +15,13 @@ function slugify(text: string): string {
     .trim();
 }
 
+interface SitemapUrl {
+  loc: string;
+  lastmod?: string;
+  priority: string;
+  changefreq: string;
+}
+
 router.get("/sitemap.xml", async (_req, res): Promise<void> => {
   const movies = await db.select({
     id: moviesTable.id,
@@ -22,7 +29,7 @@ router.get("/sitemap.xml", async (_req, res): Promise<void> => {
     createdAt: moviesTable.createdAt,
   }).from(moviesTable).orderBy(desc(moviesTable.createdAt)).limit(500);
 
-  const staticUrls = [
+  const staticUrls: SitemapUrl[] = [
     { loc: SITE_URL, priority: "1.0", changefreq: "daily" },
     { loc: `${SITE_URL}/movies`, priority: "0.9", changefreq: "daily" },
     { loc: `${SITE_URL}/tv`, priority: "0.8", changefreq: "weekly" },
@@ -35,10 +42,9 @@ router.get("/sitemap.xml", async (_req, res): Promise<void> => {
     { loc: `${SITE_URL}/category/thriller`, priority: "0.7", changefreq: "weekly" },
     { loc: `${SITE_URL}/category/animation`, priority: "0.7", changefreq: "weekly" },
     { loc: `${SITE_URL}/category/anime`, priority: "0.7", changefreq: "weekly" },
-    { loc: `${SITE_URL}/vip`, priority: "0.8", changefreq: "monthly" },
   ];
 
-  const movieUrls = movies.map((m) => ({
+  const movieUrls: SitemapUrl[] = movies.map((m) => ({
     loc: `${SITE_URL}/movie/${slugify(m.title)}-${m.id}`,
     lastmod: m.createdAt instanceof Date ? m.createdAt.toISOString().split("T")[0] : undefined,
     priority: "0.8",
@@ -64,13 +70,9 @@ ${allUrls.map(u => `  <url>
 router.get("/robots.txt", (_req, res): void => {
   const content = `User-agent: *
 Allow: /
-
-# Disallow admin area
 Disallow: /admin/
 Disallow: /login/admin
 Disallow: /2fa
-
-# Sitemap
 Sitemap: ${SITE_URL}/api/sitemap.xml
 `;
   res.setHeader("Content-Type", "text/plain");
