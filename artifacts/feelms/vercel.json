@@ -1,0 +1,7 @@
+{
+  "buildCommand": "pnpm --filter @workspace/feelms build",
+  "outputDirectory": "artifacts/feelms/dist",
+  "framework": null,
+  "installCommand": "pnpm install --no-frozen-lockfile",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
