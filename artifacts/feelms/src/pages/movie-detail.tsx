@@ -134,6 +134,24 @@ export default function MovieDetail() {
 
   const isSeries = (movie as any)?.contentType === "SERIES";
 
+  // Dynamic SEO meta tags per movie
+  useEffect(() => {
+    if (!movie) return;
+    const title = `${(movie as any).title} — Watch Free on Feelms`;
+    const description = (movie as any).description ?? `Watch ${(movie as any).title} online free in HD on Feelms.`;
+    const image = (movie as any).posterUrl ?? (movie as any).thumbnail ?? "";
+    document.title = title;
+    const setMeta = (sel: string, val: string) => { const el = document.querySelector(sel); if (el) el.setAttribute("content", val); };
+    setMeta(`meta[name="description"]`, description);
+    setMeta(`meta[property="og:title"]`, title);
+    setMeta(`meta[property="og:description"]`, description);
+    setMeta(`meta[property="og:image"]`, image);
+    setMeta(`meta[name="twitter:title"]`, title);
+    setMeta(`meta[name="twitter:description"]`, description);
+    setMeta(`meta[name="twitter:image"]`, image);
+    return () => { document.title = "Feelms — Watch Movies & TV Online Free"; };
+  }, [movie]);
+
   useEffect(() => {
     if (!isLoading && movie) {
       const t = setTimeout(() => setShowSplash(false), 800);
