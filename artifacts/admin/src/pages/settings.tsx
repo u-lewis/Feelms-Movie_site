@@ -30,7 +30,7 @@ export default function SettingsPage() {
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    fetch("/api/admin/settings", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/admin/settings", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((r) => (r.ok ? r.json() : null))
@@ -42,7 +42,7 @@ export default function SettingsPage() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const res = await fetch("/api/admin/settings", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/settings", {
         method: "PATCH",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(settings),
