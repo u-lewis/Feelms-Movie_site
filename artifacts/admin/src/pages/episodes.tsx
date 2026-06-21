@@ -66,7 +66,7 @@ export default function EpisodesPage() {
       };
       let r;
       if (editingId) {
-        r = await fetch(`${API}/api/episodes/${editingId}`, { method: "PATCH", headers, body: JSON.stringify(body) });
+        r = await fetch(`${API}/api/movies/${movieId}/episodes/${editingId}`, { method: "PATCH", headers, body: JSON.stringify(body) });
       } else {
         r = await fetch(`${API}/api/movies/${movieId}/episodes`, { method: "POST", headers, body: JSON.stringify(body) });
       }
@@ -85,7 +85,7 @@ export default function EpisodesPage() {
 
   async function handleDelete(epId: number) {
     if (!confirm("Delete this episode?")) return;
-    const r = await fetch(`${API}/api/episodes/${epId}`, { method: "DELETE", headers });
+    const r = await fetch(`${API}/api/movies/${movieId}/episodes/${epId}`, { method: "DELETE", headers });
     if (r.ok) { toast.success("Deleted"); fetchEpisodes(); }
     else toast.error("Failed to delete");
   }
