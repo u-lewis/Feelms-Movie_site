@@ -63122,7 +63122,7 @@ function serializeEpisode(e) {
   };
 }
 router8.get("/movies/:id/episodes", async (req, res) => {
-  const movieId = parseInt(req.params.id, 10);
+  const movieId = parseInt(req.params["id"], 10);
   if (isNaN(movieId)) {
     res.status(400).json({ error: "Invalid movie id" });
     return;
@@ -63131,7 +63131,7 @@ router8.get("/movies/:id/episodes", async (req, res) => {
   res.json(episodes.map(serializeEpisode));
 });
 router8.post("/movies/:id/episodes", requireAuth, requireAdmin, async (req, res) => {
-  const movieId = parseInt(req.params.id, 10);
+  const movieId = parseInt(req.params["id"], 10);
   if (isNaN(movieId)) {
     res.status(400).json({ error: "Invalid movie id" });
     return;
@@ -63157,7 +63157,7 @@ router8.post("/movies/:id/episodes", requireAuth, requireAdmin, async (req, res)
   res.status(201).json(serializeEpisode(episode));
 });
 router8.patch("/movies/:id/episodes/:epId", requireAuth, requireAdmin, async (req, res) => {
-  const epId = parseInt(req.params.epId, 10);
+  const epId = parseInt(req.params["epId"], 10);
   if (isNaN(epId)) {
     res.status(400).json({ error: "Invalid episode id" });
     return;
@@ -63182,7 +63182,7 @@ router8.patch("/movies/:id/episodes/:epId", requireAuth, requireAdmin, async (re
   res.json(serializeEpisode(updated));
 });
 router8.delete("/movies/:id/episodes/:epId", requireAuth, requireAdmin, async (req, res) => {
-  const epId = parseInt(req.params.epId, 10);
+  const epId = parseInt(req.params["epId"], 10);
   if (isNaN(epId)) {
     res.status(400).json({ error: "Invalid episode id" });
     return;
@@ -63345,7 +63345,7 @@ router10.post("/interpreters", requireAuth, requireAdmin, async (req, res) => {
   res.status(201).json(serialize(row));
 });
 router10.patch("/interpreters/:id", requireAuth, requireAdmin, async (req, res) => {
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(req.params["id"], 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid id" });
     return;
@@ -63374,7 +63374,7 @@ router10.patch("/interpreters/:id", requireAuth, requireAdmin, async (req, res) 
   res.json(serialize(row));
 });
 router10.delete("/interpreters/:id", requireAuth, requireAdmin, async (req, res) => {
-  const id = parseInt(req.params.id, 10);
+  const id = parseInt(req.params["id"], 10);
   if (isNaN(id)) {
     res.status(400).json({ error: "Invalid id" });
     return;

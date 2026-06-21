@@ -18,10 +18,8 @@ export default function AdRedirect() {
       setTimeout(() => { window.location.href = returnUrl; }, 300);
       return undefined;
     }
-    if (countdown > 0) {
-      const t = setTimeout(() => setCountdown(c => c - 1), 1000);
-      return () => clearTimeout(t);
-    }
+    const t = setTimeout(() => setCountdown(c => c - 1), 1000);
+    return () => clearTimeout(t);
   }, [countdown]);
 
   useEffect(() => {
