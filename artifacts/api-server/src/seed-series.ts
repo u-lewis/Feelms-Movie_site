@@ -99,6 +99,8 @@ const SERIES_DATA = [
 ];
 
 export async function seedSeriesData() {
+  const existing = await db.select().from(moviesTable).limit(1);
+  if (existing.length > 0) { console.log("[seed] Series already exist, skipping"); return; }
   for (const series of SERIES_DATA) {
     // Check if already seeded
     const existing = await db.select({ id: moviesTable.id })
