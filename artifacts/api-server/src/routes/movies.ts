@@ -1,4 +1,3 @@
-import { shortenUrl } from "../lib/shrinkme";
 import { Router, type IRouter } from "express";
 import { db, moviesTable, watchHistoryTable } from "@workspace/db";
 import { eq, ilike, desc, sql, inArray } from "drizzle-orm";
@@ -135,7 +134,7 @@ router.post("/movies", requireAuth, requireAdmin, async (req, res): Promise<void
   const [movie] = await db.insert(moviesTable).values({
     ...parsed.data,
     streamingLinks: parsed.data.streamingLinks ?? [],
-    downloadLinks: await Promise.all((parsed.data.downloadLinks ?? []).map(shortenUrl)),
+    downloadLinks: parsed.data.downloadLinks ?? [],
     vipDownloadLinks,
     genres: parsed.data.genres ?? [],
     vipOnly: parsed.data.vipOnly ?? false,
@@ -167,9 +166,6 @@ router.patch("/movies/:id", requireAuth, requireAdmin, async (req, res): Promise
   const vipDownloadLinks = typeof req.body.vipDownloadLinks === "string" ? req.body.vipDownloadLinks : null;
 
   const updateData: any = { ...parsed.data };
-  if (Array.isArray(updateData.downloadLinks)) {
-    updateData.downloadLinks = await Promise.all(updateData.downloadLinks.map(shortenUrl));
-  }
   if (vipDownloadLinks !== null) {
     updateData.vipDownloadLinks = vipDownloadLinks;
   }
