@@ -460,6 +460,8 @@ export async function seedMoviesData() {
 export async function seedBannersData() {
   const existing = await db.select().from(bannersTable).limit(1);
   if (existing.length > 0) { console.log("[seed] Banners already exist, skipping"); return; }
+  const existing = await db.select().from(bannersTable).limit(1);
+  if (existing.length > 0) { console.log("[seed] Banners already exist, skipping"); return; }
   const existing = await db.select({ id: bannersTable.id }).from(bannersTable);
   if (existing.length > 0) return;
 
@@ -470,6 +472,8 @@ export async function seedBannersData() {
 }
 
 export async function seedSectionsData() {
+  const existing = await db.select().from(sectionsTable).limit(1);
+  if (existing.length > 0) { console.log("[seed] Sections already exist, skipping"); return; }
   const existing = await db.select().from(sectionsTable).limit(1);
   if (existing.length > 0) { console.log("[seed] Sections already exist, skipping"); return; }
   const allMovies = await db.select({ id: moviesTable.id, genres: moviesTable.genres })
