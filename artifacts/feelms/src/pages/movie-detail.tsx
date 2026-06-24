@@ -1,4 +1,5 @@
 import { useParams, Link, useLocation } from "wouter";
+import { AdsterraBanner } from "@/components/adsterra-banner";
 import { useGetMovie, getGetMovieQueryKey, useRecordWatch, useGetMovies } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Play, Download, Star, Clock, Calendar, ArrowLeft, ChevronLeft, ChevronRight, ExternalLink, Tv2, ChevronDown, CheckCircle2, Loader2, Share2 } from "lucide-react";
