@@ -5,6 +5,7 @@ import {
   getGetVipExclusivesQueryKey, getGetSectionsQueryKey,
 } from "@workspace/api-client-react";
 import { HeroBanner } from "@/components/hero-banner";
+import { FriendlySites } from "@/components/friendly-sites";
 import { MovieRow } from "@/components/movie-row";
 import { useMemo } from "react";
 import type { Movie } from "@workspace/api-client-react";
@@ -54,6 +55,7 @@ export default function Home() {
   return (
     <div className="pb-20">
       <HeroBanner banners={banners as any} />
+      <FriendlySites />
 
       <div className="relative z-10 space-y-4">
         {trending.length > 0 && (
