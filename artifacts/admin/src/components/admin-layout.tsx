@@ -13,6 +13,7 @@ import {
   BarChart3,
   ChevronRight,
   Globe,
+  Database,
   Menu,
   X,
 } from "lucide-react";
@@ -36,6 +37,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Analytics", href: "/analytics", icon: BarChart3 },
   { label: "Settings", href: "/settings", icon: Settings },
   { label: "Friendly Sites", href: "/friendly", icon: Globe },
+  { label: "Backup", href: "/backup", icon: Database },
 ];
 
 function NavLink({ item, active, onClick }: { item: NavItem; active: boolean; onClick?: () => void }) {
