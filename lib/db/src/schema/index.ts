@@ -7,3 +7,4 @@ export * from "./ads";
 export * from "./watch_history";
 export * from "./episodes";
 export * from "./interpreters";
+export * from "./friendly";

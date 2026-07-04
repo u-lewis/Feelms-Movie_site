@@ -34,6 +34,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Interpreters", href: "/interpreters", icon: Languages },
   { label: "Analytics", href: "/analytics", icon: BarChart3 },
   { label: "Settings", href: "/settings", icon: Settings },
+  { label: "Friendly Sites", href: "/friendly", icon: Globe },
 ];
 
 function NavLink({ item, active, onClick }: { item: NavItem; active: boolean; onClick?: () => void }) {

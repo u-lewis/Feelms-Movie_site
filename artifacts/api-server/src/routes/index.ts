@@ -11,6 +11,8 @@ import tvRouter from "./tv";
 import interpretersRouter from "./interpreters";
 import adminSettingsRouter from "./admin-settings";
 import sitemapRouter from "./sitemap";
+import friendlyRouter from "./friendly";
+import friendlyRouter from "./friendly";
 
 const router: IRouter = Router();
 
@@ -26,5 +28,7 @@ router.use(statsRouter);
 router.use(interpretersRouter);
 router.use(adminSettingsRouter);
 router.use(sitemapRouter);
+router.use(friendlyRouter);
+router.use(friendlyRouter);
 
 export default router;

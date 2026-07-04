@@ -19,6 +19,7 @@ import AnalyticsPage from "@/pages/analytics";
 import SettingsPage from "@/pages/settings";
 import NotFoundPage from "@/pages/not-found";
 import EpisodesPage from "@/pages/episodes";
+import FriendlyPage from "@/pages/friendly";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -45,6 +46,7 @@ function Router() {
               <Route path="/analytics" component={AnalyticsPage} />
               <Route path="/settings" component={SettingsPage} />
           <Route path="/movies/:id/episodes" component={EpisodesPage} />
+          <Route path="/friendly" component={FriendlyPage} />
               <Route component={NotFoundPage} />
             </Switch>
           </AdminLayout>
