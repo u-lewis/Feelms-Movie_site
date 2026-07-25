@@ -209,8 +209,8 @@ function CountrySection({ country, channels, onSelect, activeUrl }: {
 }
 
 // ── Playlist URLs ─────────────────────────────────────────────────────────────
-const COUNTRY_PLAYLIST = (code: string) => `https://iptv-org.github.io/iptv/countries/${code.toLowerCase()}.m3u`;
-const GLOBAL_PLAYLIST = "https://iptv-org.github.io/iptv/index.m3u";
+const COUNTRY_PLAYLIST = (code: string) => `/api/tv/playlist?url=${encodeURIComponent(`https://iptv-org.github.io/iptv/countries/${code.toLowerCase()}.m3u`)}`;
+const GLOBAL_PLAYLIST = `/api/tv/playlist?url=${encodeURIComponent("https://iptv-org.github.io/iptv/index.m3u")}`;
 const GLOBAL_LIMIT = 2500;
 
 async function fetchPlaylist(url: string, limit?: number): Promise<Channel[]> {
