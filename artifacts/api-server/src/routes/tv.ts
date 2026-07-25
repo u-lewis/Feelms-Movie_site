@@ -62,6 +62,23 @@ router.options("/tv/proxy", (_req, res) => {
   res.sendStatus(204);
 });
 
+router.get("/tv/playlist", async (req, res): Promise<void> => {
+  const url = req.query["url"] as string;
+  if (!url) { res.status(400).json({ error: "url required" }); return; }
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    const r = await fetch(url, { headers: HEADERS, signal: controller.signal });
+    clearTimeout(timeout);
+    const text = await r.text();
+    res.setHeader("Content-Type", "text/plain");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.send(text);
+  } catch {
+    res.status(500).json({ error: "Failed to fetch playlist" });
+  }
+});
+
 router.get("/tv/proxy", async (req, res): Promise<void> => {
   const raw = req.query.url as string | undefined;
   if (!raw) { res.status(400).json({ error: "url required" }); return; }
