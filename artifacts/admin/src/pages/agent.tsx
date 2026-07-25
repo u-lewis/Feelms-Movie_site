@@ -16,6 +16,7 @@ interface ScrapedMovie {
   seasons?: number;
   episodes?: number;
   sourceUrl: string;
+  downloadUrl: string;
   approved: boolean;
 }
 
@@ -60,6 +61,7 @@ function parseOshakurPage(html: string, url: string): ScrapedMovie {
     seasons,
     episodes,
     sourceUrl: url,
+    downloadUrl: "",
     approved: false,
   };
 }
@@ -126,7 +128,7 @@ export default function AgentPage() {
         contentType: movie.contentType,
         interpreted: !!movie.interpreter,
         interpreters: movie.interpreter ? [movie.interpreter] : [],
-        downloadLinks: [],
+        downloadLinks: movie.downloadUrl ? [movie.downloadUrl] : [],
         streamingLinks: [],
         vipOnly: false,
         featured: false,
@@ -271,6 +273,9 @@ export default function AgentPage() {
                       className="bg-black/30 border border-white/10 rounded px-2 py-1 text-white/60 text-xs w-28 focus:outline-none focus:border-primary/40" />
                     <input value={movie.poster} onChange={e => updateMovie(i, "poster", e.target.value)}
                       placeholder="Poster URL"
+                      className="bg-black/30 border border-white/10 rounded px-2 py-1 text-white/60 text-xs flex-1 focus:outline-none focus:border-primary/40" />
+                    <input value={movie.downloadUrl} onChange={e => updateMovie(i, "downloadUrl", e.target.value)}
+                      placeholder="MediaFire download URL"
                       className="bg-black/30 border border-white/10 rounded px-2 py-1 text-white/60 text-xs flex-1 focus:outline-none focus:border-primary/40" />
                   </div>
                   {saved.has(i) ? (
