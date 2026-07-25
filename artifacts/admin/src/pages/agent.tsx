@@ -17,6 +17,8 @@ interface ScrapedMovie {
   episodes?: number;
   sourceUrl: string;
   downloadUrl: string;
+  trailer: string;
+  streamUrl: string;
   approved: boolean;
 }
 
@@ -62,6 +64,8 @@ function parseOshakurPage(html: string, url: string): ScrapedMovie {
     episodes,
     sourceUrl: url,
     downloadUrl: "",
+    trailer: `https://www.youtube.com/results?search_query=${encodeURIComponent(title + " official trailer")}`,
+    streamUrl: url,
     approved: false,
   };
 }
@@ -129,6 +133,8 @@ export default function AgentPage() {
         interpreted: !!movie.interpreter,
         interpreters: movie.interpreter ? [movie.interpreter] : [],
         downloadLinks: movie.downloadUrl ? [movie.downloadUrl] : [],
+        trailer: movie.trailer || null,
+        streamUrl: movie.streamUrl || null,
         streamingLinks: [],
         vipOnly: false,
         featured: false,
@@ -276,6 +282,12 @@ export default function AgentPage() {
                       className="bg-black/30 border border-white/10 rounded px-2 py-1 text-white/60 text-xs flex-1 focus:outline-none focus:border-primary/40" />
                     <input value={movie.downloadUrl} onChange={e => updateMovie(i, "downloadUrl", e.target.value)}
                       placeholder="MediaFire download URL"
+                      className="bg-black/30 border border-white/10 rounded px-2 py-1 text-white/60 text-xs flex-1 focus:outline-none focus:border-primary/40" />
+                    <input value={movie.trailer} onChange={e => updateMovie(i, "trailer", e.target.value)}
+                      placeholder="YouTube trailer URL"
+                      className="bg-black/30 border border-white/10 rounded px-2 py-1 text-white/60 text-xs flex-1 focus:outline-none focus:border-primary/40" />
+                    <input value={movie.streamUrl} onChange={e => updateMovie(i, "streamUrl", e.target.value)}
+                      placeholder="Stream URL"
                       className="bg-black/30 border border-white/10 rounded px-2 py-1 text-white/60 text-xs flex-1 focus:outline-none focus:border-primary/40" />
                   </div>
                   {saved.has(i) ? (
