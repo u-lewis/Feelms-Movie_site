@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { useAdminAuth } from "@/hooks/use-admin-auth";
 import { toast } from "sonner";
 import { Bot, Search, Plus, Loader2, Check, X, ExternalLink, Film, Tv2, AlertCircle } from "lucide-react";
@@ -72,6 +73,8 @@ function parseOshakurPage(html: string, url: string): ScrapedMovie {
 
 export default function AgentPage() {
   const { token } = useAdminAuth();
+  const [, setLocation] = useLocation();
+  const [savedIds, setSavedIds] = useState<Record<number, number>>({});
   const [url, setUrl] = useState("");
   const [bulkUrls, setBulkUrls] = useState("");
   const [mode, setMode] = useState<"single" | "bulk">("single");
@@ -147,7 +150,9 @@ export default function AgentPage() {
       });
 
       if (!r.ok) throw new Error("Failed to save");
+      const savedMovie = await r.json();
       setSaved(prev => new Set([...prev, index]));
+      setSavedIds(prev => ({ ...prev, [index]: savedMovie.id }));
       toast.success(`${movie.title} added to Feelms!`);
     } catch {
       toast.error(`Failed to save ${movie.title}`);
@@ -299,6 +304,12 @@ export default function AgentPage() {
                       className="flex items-center gap-1.5 bg-primary hover:bg-primary/90 text-primary-foreground px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors disabled:opacity-60">
                       {saving === i ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Plus className="w-3.5 h-3.5" />}
                       Add to Feelms
+                    </button>
+                  )}
+                  {saved.has(i) && movie.contentType === "SERIES" && savedIds[i] && (
+                    <button onClick={() => setLocation(`/movies/${savedIds[i]}/episodes`)}
+                      className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors">
+                      <Tv2 className="w-3.5 h-3.5" /> Manage Episodes
                     </button>
                   )}
                 </div>
