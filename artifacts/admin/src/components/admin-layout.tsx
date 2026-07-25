@@ -14,6 +14,7 @@ import {
   ChevronRight,
   Globe,
   Database,
+  Bot,
   Menu,
   X,
 } from "lucide-react";
@@ -38,6 +39,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Settings", href: "/settings", icon: Settings },
   { label: "Friendly Sites", href: "/friendly", icon: Globe },
   { label: "Backup", href: "/backup", icon: Database },
+  { label: "Movie Agent", href: "/agent", icon: Bot },
 ];
 
 function NavLink({ item, active, onClick }: { item: NavItem; active: boolean; onClick?: () => void }) {

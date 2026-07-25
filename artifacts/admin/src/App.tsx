@@ -21,6 +21,7 @@ import NotFoundPage from "@/pages/not-found";
 import EpisodesPage from "@/pages/episodes";
 import FriendlyPage from "@/pages/friendly";
 import BackupPage from "@/pages/backup";
+import AgentPage from "@/pages/agent";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -49,6 +50,7 @@ function Router() {
           <Route path="/movies/:id/episodes" component={EpisodesPage} />
           <Route path="/friendly" component={FriendlyPage} />
           <Route path="/backup" component={BackupPage} />
+          <Route path="/agent" component={AgentPage} />
               <Route component={NotFoundPage} />
             </Switch>
           </AdminLayout>
