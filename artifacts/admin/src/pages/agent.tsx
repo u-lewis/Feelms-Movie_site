@@ -31,7 +31,7 @@ function parseOshakurPage(html: string, url: string): ScrapedMovie {
     doc.querySelector(`meta[property="${prop}"]`)?.getAttribute("content") ??
     doc.querySelector(`meta[name="${prop}"]`)?.getAttribute("content") ?? "";
 
-  const title = getMeta("og:title") || doc.querySelector("h1")?.textContent?.trim() ?? "";
+  const title = getMeta("og:title") || (doc.querySelector("h1")?.textContent?.trim() ?? "");
   const description = getMeta("og:description");
   const poster = getMeta("og:image");
 
