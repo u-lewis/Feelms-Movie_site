@@ -87,10 +87,25 @@ function genreMatchScore(movieGenres: string[], targetGenres: string[]): number 
 
 function toEmbedUrl(url: string): string | null {
   if (!url) return null;
-  if (url.includes("youtube.com/watch") || url.includes("youtu.be/")) {
-    return url.replace("watch?v=", "embed/").replace("youtu.be/", "youtube.com/embed/") + "?autoplay=1&rel=0&modestbranding=1";
+  try {
+    const u = new URL(url);
+    let videoId: string | null = null;
+
+    if (u.hostname.includes("youtu.be")) {
+      videoId = u.pathname.split("/").filter(Boolean)[0] ?? null;
+    } else if (u.hostname.includes("youtube.com")) {
+      if (u.pathname === "/watch") {
+        videoId = u.searchParams.get("v");
+      } else if (u.pathname.startsWith("/embed/")) {
+        videoId = u.pathname.split("/embed/")[1]?.split("/")[0] ?? null;
+      }
+    }
+
+    if (!videoId) return null;
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+  } catch {
+    return null;
   }
-  return null;
 }
 
 interface VipQualityRow { quality: string; mirrors: string[] }
