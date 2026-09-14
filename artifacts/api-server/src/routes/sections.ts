@@ -61,6 +61,7 @@ router.get("/sections", async (req, res): Promise<void> => {
     };
   }));
 
+  res.setHeader("Cache-Control", "public, max-age=600, stale-while-revalidate=120");
   res.json(GetSectionsResponse.parse(result));
 });
 

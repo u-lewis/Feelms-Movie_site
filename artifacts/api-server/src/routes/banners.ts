@@ -39,6 +39,7 @@ router.get("/banners", async (req, res): Promise<void> => {
     query = query.where(eq(bannersTable.active, true));
   }
   const banners = await query.orderBy(asc(bannersTable.orderIndex));
+  res.setHeader("Cache-Control", "public, max-age=600, stale-while-revalidate=120");
   res.json(GetBannersResponse.parse(banners.map(serializeBanner)));
 });
 

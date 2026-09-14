@@ -85,6 +85,7 @@ router.get("/movies/trending", async (_req, res): Promise<void> => {
   const movies = await db.select().from(moviesTable)
     .orderBy(desc(moviesTable.watchCount))
     .limit(12);
+  res.setHeader("Cache-Control", "public, max-age=300, stale-while-revalidate=60");
   res.json(movies.map(serializeMovie));
 });
 
