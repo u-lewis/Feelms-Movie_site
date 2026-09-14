@@ -833,7 +833,7 @@ components:
     # MOVIES
     Movie:
       type: object
-      required: [id, title, description, poster, genres, vipOnly, featured, createdAt]
+      required: [id, title, description, poster, genres, vipOnly, featured, contentType, createdAt]
       properties:
         id:
           type: integer
@@ -875,6 +875,24 @@ components:
           type: array
           items:
             type: string
+        contentType:
+          type: string
+          enum: [MOVIE, SERIES]
+        streamUrl:
+          type: ["string", "null"]
+        vipDownloadLinks:
+          type: ["string", "null"]
+        subtitles:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+              language:
+                type: string
+              url:
+                type: string
         createdAt:
           type: string
 

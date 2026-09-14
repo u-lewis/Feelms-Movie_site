@@ -7,4 +7,5 @@ export * from "./ads";
 export * from "./watch_history";
 export * from "./episodes";
 export * from "./interpreters";
+export * from "./friendly";
 //# sourceMappingURL=index.d.ts.map

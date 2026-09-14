@@ -13,8 +13,6 @@ import adminSettingsRouter from "./admin-settings";
 import sitemapRouter from "./sitemap";
 import friendlyRouter from "./friendly";
 import backupRouter from "./backup";
-import friendlyRouter from "./friendly";
-import backupRouter from "./backup";
 
 const router: IRouter = Router();
 
@@ -30,8 +28,6 @@ router.use(statsRouter);
 router.use(interpretersRouter);
 router.use(adminSettingsRouter);
 router.use(sitemapRouter);
-router.use(friendlyRouter);
-router.use(backupRouter);
 router.use(friendlyRouter);
 router.use(backupRouter);
 
