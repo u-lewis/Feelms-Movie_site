@@ -207,7 +207,7 @@ export default function MovieDetail() {
   useEffect(() => {
     if (!movie || !isSeries) return;
     setEpisodesLoading(true);
-    fetch(`/api/movies/${movieId}/episodes`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/movies/${movieId}/episodes`)
       .then(r => r.json())
       .then((data: Episode[]) => {
         setEpisodes(data);
