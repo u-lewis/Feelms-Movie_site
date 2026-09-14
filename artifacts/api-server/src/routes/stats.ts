@@ -54,6 +54,32 @@ router.get("/stats/dashboard", requireAuth, requireAdmin, async (_req, res): Pro
     count: sql<number>`count(distinct ip_address)`,
   }).from(watchHistoryTable);
 
+  // Daily visits for heatmap (last 365 days)
+  const dailyVisits = await db.select({
+    date: sql<string>`date_trunc('day', watched_at)::date::text`,
+    count: sql<number>`count(distinct coalesce(ip_address, cast(user_id as text)))`,
+  }).from(watchHistoryTable)
+  .groupBy(sql`date_trunc('day', watched_at)::date`)
+  .orderBy(sql`date_trunc('day', watched_at)::date`);
+
+  // Most frequent visitors by IP
+  const frequentVisitors = await db.select({
+    ip: watchHistoryTable.ipAddress,
+    visits: sql<number>`count(distinct movie_id)`,
+    lastSeen: sql<string>`max(watched_at)::text`,
+  }).from(watchHistoryTable)
+  .groupBy(watchHistoryTable.ipAddress)
+  .orderBy(sql`count(distinct movie_id) desc`)
+  .limit(10);
+
+  // Unique IPs today
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const [todayStats] = await db.select({
+    uniqueIPs: sql<number>`count(distinct coalesce(ip_address, cast(user_id as text)))`,
+  }).from(watchHistoryTable)
+  .where(sql`watched_at >= ${today.toISOString()}`);
+
   const recentPayments = await db.select().from(paymentsTable)
     .orderBy(desc(paymentsTable.createdAt))
     .limit(5);
@@ -81,6 +107,13 @@ router.get("/stats/dashboard", requireAuth, requireAdmin, async (_req, res): Pro
       createdAt: p.createdAt.toISOString(),
     })),
     topMovies: topMovies.map(serializeMovie),
+    dailyVisits: dailyVisits.map(d => ({ date: d.date, count: Number(d.count) })),
+    frequentVisitors: frequentVisitors.map(v => ({
+      ip: v.ip ?? "unknown",
+      visits: Number(v.visits),
+      lastSeen: v.lastSeen,
+    })),
+    todayUniqueIPs: Number(todayStats?.uniqueIPs ?? 0),
   }));
 });
 
