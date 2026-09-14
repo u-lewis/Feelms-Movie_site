@@ -216,7 +216,7 @@ router.delete("/movies/:id", requireAuth, requireAdmin, async (req, res): Promis
   res.sendStatus(204);
 });
 
-router.post("/movies/:id/watch", requireAuth, async (req, res): Promise<void> => {
+router.post("/movies/:id/watch", async (req, res): Promise<void> => {
   const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const id = parseInt(rawId, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
