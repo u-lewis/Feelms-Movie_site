@@ -78,7 +78,7 @@ function toArr<T>(v: unknown): T[] { return Array.isArray(v) ? (v as T[]) : []; 
 
 export default function Movies() {
   const [location] = useLocation();
-  const urlParams = new URLSearchParams(location.split("?")[1] || "");
+  const urlParams = new URLSearchParams(window.location.search || location.split("?")[1] || "");
   const urlGenre = urlParams.get("genre") || "All";
   const urlType = urlParams.get("type");
   const initContentType: ContentType =
