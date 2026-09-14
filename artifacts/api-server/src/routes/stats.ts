@@ -18,6 +18,7 @@ function serializeMovie(m: any) {
     trailer: m.trailer ?? null,
     streamingLinks: m.streamingLinks ?? [],
     downloadLinks: m.downloadLinks ?? [],
+    vipDownloadLinks: m.vipDownloadLinks ?? null,
     vipOnly: m.vipOnly,
     featured: m.featured,
     genres: m.genres ?? [],
@@ -25,6 +26,11 @@ function serializeMovie(m: any) {
     rating: m.rating ?? null,
     duration: m.duration ?? null,
     watchCount: m.watchCount ?? 0,
+    streamUrl: m.streamUrl ?? null,
+    contentType: m.contentType ?? "MOVIE",
+    subtitles: m.subtitles ?? [],
+    interpreted: m.interpreted ?? false,
+    interpreters: m.interpreters ?? [],
     createdAt: m.createdAt instanceof Date ? m.createdAt.toISOString() : m.createdAt,
   };
 }
