@@ -30,7 +30,31 @@
 
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1156637542202770" crossorigin="anonymous"></script>
-  </head>
+    <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Feelms",
+    "url": "https://feelms-main.vercel.app",
+    "description": "Free movie and TV streaming platform with interpreted content",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://feelms-main.vercel.app/movies?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Feelms",
+    "url": "https://feelms-main.vercel.app",
+    "logo": "https://feelms-main.vercel.app/logo.png",
+    "sameAs": []
+  }
+  </script>
+</head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
