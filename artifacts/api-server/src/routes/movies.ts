@@ -1,6 +1,6 @@
 import { Router, type IRouter } from "express";
 import { db, moviesTable, watchHistoryTable } from "@workspace/db";
-import { eq, ilike, desc, sql, inArray } from "drizzle-orm";
+import { eq, ilike, desc, sql, inArray, and } from "drizzle-orm";
 import { requireAuth, requireAdmin, optionalAuth } from "../lib/auth";
 import {
   GetMoviesQueryParams,
