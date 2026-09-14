@@ -216,31 +216,52 @@ router.delete("/movies/:id", requireAuth, requireAdmin, async (req, res): Promis
   res.sendStatus(204);
 });
 
-router.post("/movies/:id/watch", async (req, res): Promise<void> => {
+router.post("/movies/:id/watch", optionalAuth, async (req, res): Promise<void> => {
   const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const id = parseInt(rawId, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
 
-  const user = (req as any).user;
+  const user = (req as any).user ?? null;
+  const ip = (req.headers["x-forwarded-for"] as string)?.split(",")[0]?.trim()
+    || req.socket.remoteAddress
+    || "unknown";
+
   const [movie] = await db.select().from(moviesTable).where(eq(moviesTable.id, id));
   if (!movie) { res.status(404).json({ error: "Movie not found" }); return; }
 
-  await db.update(moviesTable)
-    .set({ watchCount: sql`${moviesTable.watchCount} + 1` })
-    .where(eq(moviesTable.id, id));
+  // Check for duplicate — same user or same IP for same movie
+  const duplicate = await db.select({ id: watchHistoryTable.id })
+    .from(watchHistoryTable)
+    .where(
+      and(
+        eq(watchHistoryTable.movieId, id),
+        user
+          ? eq(watchHistoryTable.userId, user.id)
+          : eq(watchHistoryTable.ipAddress, ip)
+      )
+    )
+    .limit(1);
+
+  // Only increment watchCount if first time
+  if (duplicate.length === 0) {
+    await db.update(moviesTable)
+      .set({ watchCount: sql`${moviesTable.watchCount} + 1` })
+      .where(eq(moviesTable.id, id));
+  }
 
   const episodeId = req.body?.episodeId ? parseInt(req.body.episodeId, 10) : null;
 
   const [entry] = await db.insert(watchHistoryTable).values({
     movieId: id,
-    userId: user.id,
+    userId: user?.id ?? null,
     episodeId: episodeId && !isNaN(episodeId) ? episodeId : null,
+    ipAddress: ip,
   }).returning();
 
   res.json(RecordWatchResponse.parse({
     id: entry.id,
     movieId: entry.movieId,
-    userId: entry.userId,
+    userId: entry.userId ?? 0,
     watchedAt: entry.watchedAt.toISOString(),
   }));
 });

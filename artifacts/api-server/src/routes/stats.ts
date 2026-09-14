@@ -49,6 +49,11 @@ router.get("/stats/dashboard", requireAuth, requireAdmin, async (_req, res): Pro
 
   const [watchStats] = await db.select({ total: count() }).from(watchHistoryTable);
 
+  // Count unique visitors by IP
+  const uniqueVisitors = await db.select({
+    count: sql<number>`count(distinct ip_address)`,
+  }).from(watchHistoryTable);
+
   const recentPayments = await db.select().from(paymentsTable)
     .orderBy(desc(paymentsTable.createdAt))
     .limit(5);
@@ -64,6 +69,7 @@ router.get("/stats/dashboard", requireAuth, requireAdmin, async (_req, res): Pro
     totalMovies: Number(movieStats.total),
     vipMovies: Number(movieStats.vipCount),
     totalWatches: Number(watchStats.total),
+    uniqueVisitors: Number(uniqueVisitors[0]?.count ?? 0),
     recentPayments: recentPayments.map(p => ({
       id: p.id,
       userId: p.userId,
