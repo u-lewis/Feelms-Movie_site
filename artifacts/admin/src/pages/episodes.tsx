@@ -35,6 +35,24 @@ export default function EpisodesPage() {
   const [form, setForm] = useState({ ...emptyEp });
   const [saving, setSaving] = useState(false);
   const [activeSeason, setActiveSeason] = useState(1);
+  const [moviePartsMode, setMoviePartsMode] = useState(false);
+
+  function partLetter(index: number): string {
+    return String.fromCharCode(65 + index); // 0->A, 1->B, 2->C...
+  }
+
+  function applyMoviePartsDefaults(on: boolean) {
+    setMoviePartsMode(on);
+    if (on) {
+      const seasonOneCount = episodes.filter(e => e.season === 1).length;
+      setForm(f => ({
+        ...f,
+        season: 1,
+        episodeNumber: seasonOneCount + 1,
+        title: `Part ${partLetter(seasonOneCount)}`,
+      }));
+    }
+  }
 
   const headers = { "Content-Type": "application/json", Authorization: `Bearer ${token}` };
 
@@ -103,6 +121,7 @@ export default function EpisodesPage() {
       vipOnly: ep.vipOnly,
     });
     setEditingId(ep.id);
+    setMoviePartsMode(false);
     setShowForm(true);
   }
 
@@ -117,7 +136,7 @@ export default function EpisodesPage() {
           <h1 className="text-xl font-bold text-white">Episodes</h1>
           <p className="text-white/40 text-sm">{movieTitle}</p>
         </div>
-        <button onClick={() => { setForm({ ...emptyEp }); setEditingId(null); setShowForm(true); }}
+        <button onClick={() => { setForm({ ...emptyEp }); setEditingId(null); setMoviePartsMode(false); setShowForm(true); }}
           className="ml-auto flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
           <Plus className="w-4 h-4" /> Add Episode
         </button>
@@ -132,22 +151,40 @@ export default function EpisodesPage() {
               <X className="w-4 h-4" />
             </button>
           </div>
+          <div className="flex items-center gap-2 mb-4">
+            <input type="checkbox" id="moviePartsMode" checked={moviePartsMode} onChange={e => applyMoviePartsDefaults(e.target.checked)}
+              className="w-4 h-4 accent-primary" />
+            <label htmlFor="moviePartsMode" className="text-white/70 text-sm">Movie Parts (full movie split into Part A / Part B...)</label>
+          </div>
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="text-white/50 text-xs uppercase tracking-wider block mb-1">Season</label>
-              <input type="number" value={form.season} onChange={e => setForm(f => ({ ...f, season: Number(e.target.value) }))}
-                className="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary/50" />
-            </div>
-            <div>
-              <label className="text-white/50 text-xs uppercase tracking-wider block mb-1">Episode #</label>
-              <input type="number" value={form.episodeNumber} onChange={e => setForm(f => ({ ...f, episodeNumber: Number(e.target.value) }))}
-                className="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary/50" />
-            </div>
-            <div className="col-span-2">
-              <label className="text-white/50 text-xs uppercase tracking-wider block mb-1">Title</label>
-              <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-                className="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary/50" />
-            </div>
+            {moviePartsMode ? (
+              <div className="col-span-2">
+                <label className="text-white/50 text-xs uppercase tracking-wider block mb-1">Part</label>
+                <div className="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-white/70 text-sm">
+                  {form.title || "Part A"} <span className="text-white/30">(auto)</span>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div>
+                  <label className="text-white/50 text-xs uppercase tracking-wider block mb-1">Season</label>
+                  <input type="number" value={form.season} onChange={e => setForm(f => ({ ...f, season: Number(e.target.value) }))}
+                    className="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary/50" />
+                </div>
+                <div>
+                  <label className="text-white/50 text-xs uppercase tracking-wider block mb-1">Episode #</label>
+                  <input type="number" value={form.episodeNumber} onChange={e => setForm(f => ({ ...f, episodeNumber: Number(e.target.value) }))}
+                    className="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary/50" />
+                </div>
+              </>
+            )}
+            {!moviePartsMode && (
+              <div className="col-span-2">
+                <label className="text-white/50 text-xs uppercase tracking-wider block mb-1">Title</label>
+                <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
+                  className="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary/50" />
+              </div>
+            )}
             <div className="col-span-2">
               <label className="text-white/50 text-xs uppercase tracking-wider block mb-1">Description</label>
               <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={2}
